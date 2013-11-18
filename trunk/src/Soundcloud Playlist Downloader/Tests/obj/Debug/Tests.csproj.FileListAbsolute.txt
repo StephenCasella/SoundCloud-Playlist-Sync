@@ -1,0 +1,9 @@
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.pdb
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.xml
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.xml
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.pdb
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache

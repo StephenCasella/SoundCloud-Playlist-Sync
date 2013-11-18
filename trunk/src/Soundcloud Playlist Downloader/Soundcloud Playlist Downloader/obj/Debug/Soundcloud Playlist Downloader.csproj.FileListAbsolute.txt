@@ -1,0 +1,40 @@
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe.config
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.pdb
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud_Playlist_Downloader.Form1.resources
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud_Playlist_Downloader.Properties.Resources.resources
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.csproj.GenerateResource.Cache
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.exe
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.pdb
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.Common.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.Patterns.Threading.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.xml
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.csprojResolveAssemblyReference.cache
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\policy.2.0.taglib-sharp.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\taglib-sharp.dll
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\policy.2.0.taglib-sharp.config
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe.manifest
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.application
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.exe.manifest
+F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.application
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe.config
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.exe
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.pdb
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe.manifest
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.application
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.exe
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\Soundcloud Playlist Downloader.pdb
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\policy.2.0.taglib-sharp.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.Common.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.Patterns.Threading.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\taglib-sharp.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\PostSharp.xml
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\bin\Debug\policy.2.0.taglib-sharp.config
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.csprojResolveAssemblyReference.cache
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud_Playlist_Downloader.Form1.resources
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud_Playlist_Downloader.Properties.Resources.resources
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.csproj.GenerateResource.Cache
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.exe.manifest
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader\obj\Debug\Soundcloud Playlist Downloader.application

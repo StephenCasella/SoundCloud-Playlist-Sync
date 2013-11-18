@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>taglib</id>
+    <version>2.1.0.0</version>
+    <title>TagLib#</title>
+    <authors>Brian Nickel, Gabriel Burt, etc.</authors>
+    <owners>Brian Nickel, Gabriel Burt, etc.</owners>
+    <licenseUrl>http://www.opensource.org/licenses/lgpl-2.1.php</licenseUrl>
+    <projectUrl>https://github.com/mono/taglib-sharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>TagLib# (aka taglib-sharp) is a library for reading and writing
+metadata in media files, including video, audio, and photo formats.</description>
+    <releaseNotes>Version 2.1.0.0
+July 3, 2012
+
+Fixes and Features in this release include:
+  * Bump the version number because of an ABI break in 363f8ae
+  * Initial support for Audible files (bgo#601543)
+
+Contributors to this release:
+  Alan McGovern, Alexander Kojevnikov, Guy Taylor</releaseNotes>
+    <copyright />
+    <language />
+  </metadata>
+</package>

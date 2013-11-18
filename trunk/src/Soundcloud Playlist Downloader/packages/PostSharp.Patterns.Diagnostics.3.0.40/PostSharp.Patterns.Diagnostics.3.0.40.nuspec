@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>PostSharp.Patterns.Diagnostics</id>
+    <version>3.0.40</version>
+    <title>PostSharp Diagnostics Pattern Library</title>
+    <authors>SharpCrafters s.r.o.</authors>
+    <owners>SharpCrafters s.r.o.</owners>
+    <licenseUrl>http://www.sharpcrafters.com/links/nuget-license</licenseUrl>
+    <projectUrl>http://www.sharpcrafters.com/links/nuget-home</projectUrl>
+    <iconUrl>http://www.sharpcrafters.com/nuget/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An official PostSharp Pattern. Adds detailed tracing to any method without modifying your source code. Several backends
+      are available as separate NuGet packages.</description>
+    <releaseNotes />
+    <copyright />
+    <language>en-US</language>
+    <tags>postsharp sharcrafters aop aspect monitoring instrumentation log logging tracing nlog log4net elmah Patterns</tags>
+    <dependencies>
+      <dependency id="PostSharp" version="3.0.40" />
+    </dependencies>
+  </metadata>
+</package>
