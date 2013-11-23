@@ -405,8 +405,7 @@ namespace Soundcloud_Playlist_Downloader
 
         public string Sanitize(string input)
         {
-            // TODO: replace this with a whitelist regex
-            Regex regex = new Regex(@"[^\w\s\d]");
+            Regex regex = new Regex(@"[^\w\s\d-]");
             return input != null ? 
                 regex.Replace(input.Replace("&amp;", "and")
                     .Replace("&", "and").Replace(".", "_"),

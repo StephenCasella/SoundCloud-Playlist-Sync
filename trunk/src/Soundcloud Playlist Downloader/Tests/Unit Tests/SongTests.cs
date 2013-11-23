@@ -22,7 +22,7 @@ namespace Tests.Unit_Tests
 
 
         [TestCase("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ~`!@#$%^&*()_+=-{}][\\|'\";:/?.>,,", 
-            @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 and__")]
+            @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 and_-_")]
         public static void Song_Sanitize(string input, string expectedOutput)
         {
             Assert.AreEqual(expectedOutput, song.Sanitize(input));

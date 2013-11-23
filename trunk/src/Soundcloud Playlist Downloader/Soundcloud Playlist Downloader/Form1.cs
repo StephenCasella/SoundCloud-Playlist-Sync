@@ -116,6 +116,10 @@ namespace Soundcloud_Playlist_Downloader
         {
             syncButton.Text = DefaultActionText;
             syncButton.Enabled = true;
+            if (exiting)
+            {
+                Dispose();
+            }
         }
 
         private void syncButton_Click(object sender, EventArgs e)
