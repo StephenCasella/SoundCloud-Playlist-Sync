@@ -7,3 +7,33 @@ F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\D
 F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.dll
 F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.pdb
 F:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.pdb
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.Patterns.Threading.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Soundcloud Playlist Downloader.exe
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\taglib-sharp.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Soundcloud Playlist Downloader.pdb
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.xml
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.xml
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.xml
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.dll
+G:\Soundcloud_Playlist_Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.pdb
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Tests.pdb
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.Patterns.Threading.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Soundcloud Playlist Downloader.exe
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\taglib-sharp.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Soundcloud Playlist Downloader.pdb
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\Moq.xml
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\nunit.framework.xml
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\bin\Debug\PostSharp.xml
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.dll
+G:\SoundCloud-Playlist-Sync\trunk\src\Soundcloud Playlist Downloader\Tests\obj\Debug\Tests.pdb
