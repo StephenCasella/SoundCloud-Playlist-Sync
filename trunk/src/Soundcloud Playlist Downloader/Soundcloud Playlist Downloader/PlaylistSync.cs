@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -345,14 +346,15 @@ namespace Soundcloud_Playlist_Downloader
         }
     }
 
-    class Song
+    public class Song
     {
 
         private string _title = null;
-        public string Title { 
-            get 
-            { 
-                return EffectiveDownloadUrl == DownloadUrl ? _title + "_High_Quality" : _title; 
+        public string Title
+        {
+            get
+            {
+                return EffectiveDownloadUrl == DownloadUrl ? _title + "_High_Quality" : _title;
             }
             set
             {
@@ -361,55 +363,55 @@ namespace Soundcloud_Playlist_Downloader
         }
 
         private string _username = null;
-        public string Username 
-        { 
-            get 
-            { 
-                return _username; 
-            } 
-            set 
-            { 
+        public string Username
+        {
+            get
+            {
+                return _username;
+            }
+            set
+            {
                 _username = Sanitize(value);
-            } 
+            }
         }
 
         public string StreamUrl { get; set; }
         public string DownloadUrl { get; set; }
         public bool IsHD { get { return DownloadUrl == EffectiveDownloadUrl; } }
-        public string EffectiveDownloadUrl { 
-            get 
-            { 
-                return (!string.IsNullOrWhiteSpace(DownloadUrl) ? 
-                    DownloadUrl : StreamUrl).Replace("\r", "").Replace("\n",""); 
-            } 
+        public string EffectiveDownloadUrl
+        {
+            get
+            {
+                return (!string.IsNullOrWhiteSpace(DownloadUrl) ?
+                    DownloadUrl : StreamUrl).Replace("\r", "").Replace("\n", "");
+            }
         }
 
         private string _path = null;
-        public string LocalPath 
+        public string LocalPath
         {
-            get 
+            get
             {
                 return _path;
-            } 
-            set 
-            { 
-                _path = value; 
-            } 
+            }
+            set
+            {
+                _path = value;
+            }
         }
-        
+
         public string Genre { get; set; }
         public string Description { get; set; }
 
-        private string Sanitize(string input)
+        public string Sanitize(string input)
         {
             // TODO: replace this with a whitelist regex
-            return input != null ? input.Replace("&amp;", "and")
-                    .Replace(";", "").Replace("[", "")
-                    .Replace("]", "").Replace("(", " ")
-                    .Replace(")", " ").Replace("*", "")
-                    .Replace("!", "").Replace("&", "and")
-                    .Replace(":", "").Replace("\"", "")
-                    .Replace(".", "_") : null;
+            Regex regex = new Regex(@"[^\w\s\d]");
+            return input != null ? 
+                regex.Replace(input.Replace("&amp;", "and")
+                    .Replace("&", "and").Replace(".", "_"),
+                   string.Empty)
+                : null;
         }
     }
 }

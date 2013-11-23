@@ -43,6 +43,12 @@
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PostSharp">
+      <HintPath>..\packages\PostSharp.3.0.40\lib\net20\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Patterns.Threading">
+      <HintPath>..\packages\PostSharp.Patterns.Threading.3.0.40\lib\net40\PostSharp.Patterns.Threading.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -59,13 +65,19 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit Tests\SongTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integration Tests\" />
-    <Folder Include="Unit Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Soundcloud Playlist Downloader\Soundcloud Playlist Downloader.csproj">
+      <Project>{252a287c-8c7d-40bc-935b-5189d1413f43}</Project>
+      <Name>Soundcloud Playlist Downloader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
