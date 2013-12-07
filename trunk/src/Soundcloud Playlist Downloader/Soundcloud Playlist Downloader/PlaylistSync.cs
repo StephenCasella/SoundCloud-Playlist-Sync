@@ -146,13 +146,28 @@ namespace Soundcloud_Playlist_Downloader
                     {
                         string extension = null;
 
-                        WebRequest request = WebRequest.Create(song.EffectiveDownloadUrl);
-
-                        request.Method = "HEAD";
-                        using (WebResponse response = request.GetResponse())
+                        try
                         {
-                            extension = Path.GetExtension(response.Headers["Content-Disposition"]
-                                .Replace("attachment;filename=", "").Replace("\"", ""));
+                            WebRequest request = WebRequest.Create(song.EffectiveDownloadUrl);
+
+                            request.Method = "HEAD";
+                            using (WebResponse response = request.GetResponse())
+                            {
+                                extension = Path.GetExtension(response.Headers["Content-Disposition"]
+                                    .Replace("attachment;filename=", "").Replace("\"", ""));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // the download link might be invalid
+                            WebRequest request = WebRequest.Create(song.StreamUrl);
+
+                            request.Method = "HEAD";
+                            using (WebResponse response = request.GetResponse())
+                            {
+                                extension = Path.GetExtension(response.Headers["Content-Disposition"]
+                                    .Replace("attachment;filename=", "").Replace("\"", ""));
+                            }
                         }
 
                         song.LocalPath += extension;
@@ -299,12 +314,16 @@ namespace Soundcloud_Playlist_Downloader
 
                             if (!string.IsNullOrWhiteSpace(song.Title) &&
                                 !string.IsNullOrWhiteSpace(song.Username) &&
-                                !string.IsNullOrWhiteSpace(song.StreamUrl))
+                                !string.IsNullOrWhiteSpace(song.EffectiveDownloadUrl))
                             {
 
 
                                 song.LocalPath = Path.Combine(Path.Combine(localPath, song.Username), song.Title);
                                 songs.Add(song);
+                            }
+                            else
+                            {
+                                // song is not streamable or downloadble
                             }
 
                         }
@@ -382,8 +401,16 @@ namespace Soundcloud_Playlist_Downloader
         {
             get
             {
-                return (!string.IsNullOrWhiteSpace(DownloadUrl) ?
-                    DownloadUrl : StreamUrl).Replace("\r", "").Replace("\n", "");
+                string url = !string.IsNullOrWhiteSpace(DownloadUrl) ?
+                    DownloadUrl : StreamUrl;
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    return url.Replace("\r", "").Replace("\n", "");
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

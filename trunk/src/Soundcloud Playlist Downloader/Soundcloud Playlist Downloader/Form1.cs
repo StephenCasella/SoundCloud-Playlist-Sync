@@ -52,6 +52,7 @@ namespace Soundcloud_Playlist_Downloader
             }
         }
 
+        [SilentFailure]
         private void UpdateStatus()
         {
             if (!exiting)
@@ -90,11 +91,13 @@ namespace Soundcloud_Playlist_Downloader
             
         }
 
+        [SilentFailure]
         private void InvokeUpdateStatus()
         {
             statusStrip1.Invoke(PerformStatusUpdateImplementation);
         }
 
+        [SilentFailure]
         private void UpdateProgressBar()
         {
             progressBar.Minimum = 0;
@@ -112,6 +115,7 @@ namespace Soundcloud_Playlist_Downloader
             syncButton.Invoke(PerformSyncCompleteImplementation);
         }
 
+        [SilentFailure]
         private void SyncCompleteButton()
         {
             syncButton.Text = DefaultActionText;
@@ -192,6 +196,7 @@ namespace Soundcloud_Playlist_Downloader
             }
         }
 
+        [SilentFailure]
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.Save();
