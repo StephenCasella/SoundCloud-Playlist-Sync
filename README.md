@@ -1,10 +1,7 @@
 SoundCloud-Playlist-Sync
 ========================
 
-A utility to synchronize local directories with SoundCloud playlists. See http://originaltechsolutions.blogspot.com/2013/11/soundcloud-playlist-downloader-free.html for usage information.
-
-Gratuity is appreciated: 1PjsMvpVDxAEfekwVL6mEHyfunLm29Buer
-
+A utility to synchronize local directories with SoundCloud playlists.
 
 After looking around and not finding any reasonable mechanism for downloading my SoundCloud playlists to local folders and keeping those folders in sync with the online playlist contents, I decided to build one. Here are the features:
 
@@ -47,3 +44,6 @@ Depending on the size of the playlist, the application may run for a little whil
 If you receive any download error messages, just run it again. It retry the songs that failed to download and succeed. At times files will fail to download due to connection issues, SoundCloud API throttling, or other reasons, but rerunning the sync will succeed.
 
 At risk of stating the obvious, this is my own creation and is not affiliated with SoundCloud in any way. Also, the files that are downloaded are the ones that are originally streamed by SoundCloud (usually low quality versions) except when the uploader has included a high quality download link. Observe the copyright/etc laws of your country.
+
+
+Gratuity is appreciated: 1PjsMvpVDxAEfekwVL6mEHyfunLm29Buer
