@@ -46,4 +46,4 @@ If you receive any download error messages, just run it again. It retry the song
 At risk of stating the obvious, this is my own creation and is not affiliated with SoundCloud in any way. Also, the files that are downloaded are the ones that are originally streamed by SoundCloud (usually low quality versions) except when the uploader has included a high quality download link. Observe the copyright/etc laws of your country.
 
 
-Gratuity is appreciated: 1PjsMvpVDxAEfekwVL6mEHyfunLm29Buer
+Gratuity is appreciated: 1GL13HLyB7cZvyvZKpPTnEHGmFeGSj9yNf
