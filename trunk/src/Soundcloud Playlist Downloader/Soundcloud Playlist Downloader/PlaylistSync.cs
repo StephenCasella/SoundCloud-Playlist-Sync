@@ -260,77 +260,88 @@ namespace Soundcloud_Playlist_Downloader
         private IList<Song> ParseSongsFromPlaylistXML(string playlistXML, string localPath, string apiKey)
         {
             IList<Song> songs = new List<Song>();
-            XDocument document = XDocument.Parse(playlistXML);
-            
-            XElement playlist = document.Element("playlist");
 
-            foreach (XElement node in playlist.Nodes())
+            try
             {
-                if (node.Name == "tracks")
+                XDocument document = XDocument.Parse(playlistXML);
+
+                XElement playlist = document.Element("playlist");
+
+                foreach (XElement node in playlist.Nodes())
                 {
-
-                    foreach (XElement track in node.Elements())
+                    if (node.Name == "tracks")
                     {
-                        if (track.Name == "track")
+
+                        foreach (XElement track in node.Elements())
                         {
-
-                            Song song = new Song();
-
-                            foreach (XElement attribute in track.Elements())
+                            if (track.Name == "track")
                             {
 
-                                if (attribute.Name == "title")
+                                Song song = new Song();
+
+                                foreach (XElement attribute in track.Elements())
                                 {
-                                    song.Title = attribute.Value;
-                                }
-                                else if (attribute.Name == "user")
-                                {
-                                    foreach (XElement userNode in attribute.Elements())
+
+                                    if (attribute.Name == "title")
                                     {
-                                        if (userNode.Name == "username")
+                                        song.Title = attribute.Value;
+                                    }
+                                    else if (attribute.Name == "user")
+                                    {
+                                        foreach (XElement userNode in attribute.Elements())
                                         {
-                                            song.Username = userNode.Value;
-                                            break;
+                                            if (userNode.Name == "username")
+                                            {
+                                                song.Username = userNode.Value;
+                                                break;
+                                            }
                                         }
                                     }
+                                    else if (attribute.Name == "stream-url")
+                                    {
+                                        song.StreamUrl = attribute.Value + "?client_id=" + apiKey;
+                                    }
+                                    else if (attribute.Name == "download-url")
+                                    {
+                                        song.DownloadUrl = attribute.Value + "?client_id=" + apiKey;
+                                    }
+                                    else if (attribute.Name == "genre")
+                                    {
+                                        song.Genre = attribute.Value;
+                                    }
+                                    else if (attribute.Name == "description")
+                                    {
+                                        song.Description = attribute.Value;
+                                    }
                                 }
-                                else if (attribute.Name == "stream-url")
+
+                                if (!string.IsNullOrWhiteSpace(song.Title) &&
+                                    !string.IsNullOrWhiteSpace(song.Username) &&
+                                    !string.IsNullOrWhiteSpace(song.EffectiveDownloadUrl))
                                 {
-                                    song.StreamUrl = attribute.Value + "?client_id=" + apiKey;
+
+
+                                    song.LocalPath = Path.Combine(Path.Combine(localPath, song.Username), song.Title);
+                                    songs.Add(song);
                                 }
-                                else if (attribute.Name == "download-url")
+                                else
                                 {
-                                    song.DownloadUrl = attribute.Value + "?client_id=" + apiKey;
+                                    // song is not streamable or downloadble
                                 }
-                                else if (attribute.Name == "genre")
-                                {
-                                    song.Genre = attribute.Value;
-                                }
-                                else if (attribute.Name == "description")
-                                {
-                                    song.Description = attribute.Value;
-                                }
+
                             }
-
-                            if (!string.IsNullOrWhiteSpace(song.Title) &&
-                                !string.IsNullOrWhiteSpace(song.Username) &&
-                                !string.IsNullOrWhiteSpace(song.EffectiveDownloadUrl))
-                            {
-
-
-                                song.LocalPath = Path.Combine(Path.Combine(localPath, song.Username), song.Title);
-                                songs.Add(song);
-                            }
-                            else
-                            {
-                                // song is not streamable or downloadble
-                            }
-
                         }
-                    }
 
+                    }
                 }
-            }            
+            }
+            catch (Exception)
+            {
+                throw new Exception("An error occurred parsing the playlist XML. Are you using the correct link " +
+                    "(i.e. https//api.soundcloud.com/playlist/...)? See " +
+                    "http://originaltechsolutions.blogspot.com/2013/11/soundcloud-playlist-downloader-free.html" +
+                    " for instructions on how to determine the API link for a playlist.");
+            }
 
             return songs;
         }
