@@ -1,172 +1,36 @@
-﻿
-function PathToUri([string] $path)
+﻿param($installPath, $toolsPath, $package, $project)
+
+$targetsFile = [System.IO.Path]::Combine($toolsPath, 'PostSharp.targets')
+
+# Need to load MSBuild assembly if it's not loaded yet.
+Add-Type -AssemblyName 'Microsoft.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+
+# Grab the loaded MSBuild project for the project
+$msbuild = [Microsoft.Build.Evaluation.ProjectCollection]::GlobalProjectCollection.GetLoadedProjects($project.FullName) | Select-Object -First 1
+
+$itemsToRemove = @()
+
+
+# Remove stuff from the project.
+$itemsToRemove += $msbuild.Xml.Properties | Where-Object {$_.Name.ToLowerInvariant() -eq "dontimportpostsharp" }
+$itemsToRemove += $msbuild.Xml.Imports | Where-Object { $_.Project.ToLowerInvariant().EndsWith("postsharp.targets") }
+$itemsToRemove += $msbuild.Xml.Targets | Where-Object {$_.Name.ToLowerInvariant() -eq "ensurepostsharpimported" }
+  
+if ($itemsToRemove -and $itemsToRemove.length)
 {
-    return new-object Uri('file://' + $path.Replace("%","%25").Replace("#","%23").Replace("$","%24").Replace("+","%2B").Replace(",","%2C").Replace("=","%3D").Replace("@","%40").Replace("~","%7E").Replace("^","%5E"))
+    foreach ($itemToRemove in $itemsToRemove)
+    {
+        $msbuild.Xml.RemoveChild($itemToRemove) | out-null
+    }
+     
+    $project.Save()
+    $project.Object.Refresh()
 }
-
-function UriToPath([System.Uri] $uri)
-{
-    return [System.Uri]::UnescapeDataString( $uri.ToString() ).Replace([System.IO.Path]::AltDirectorySeparatorChar, [System.IO.Path]::DirectorySeparatorChar)
-}
-
-function GetPostSharpProject($project, [bool] $create)
-{
-	$xml = [xml] @"
-<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.postsharp.org/1.0/configuration">
-</Project>
-"@
-
-	$projectName = $project.Name
-	
-	# Set the psproj name to be the Project's name, i.e. 'ConsoleApplication1.psproj'
-	$psprojectName = $project.Name + ".psproj"
-
-	# Check if the file previously existed in the project
-	$psproj = $project.ProjectItems | where { $_.Name -eq $psprojectName }
-
-	# If this item already exists, load it
-	if ($psproj)
-	{
-	  $psprojectFile = $psproj.Properties.Item("FullPath").Value
-	  
-	  Write-Host "Opening existing file $psprojectFile"
-	  
-	  $xml = [xml](Get-Content $psprojectFile)
-	} 
-	elseif ( $create )
-	{
-		# Create a file on disk, write XML, and load it into the project.
-		$psprojectFile = [System.IO.Path]::ChangeExtension($project.FileName, ".psproj")
-		
-		Write-Host "Creating file $psprojectFile"
-		
-		$xml.Save($psprojectFile)
-		$project.ProjectItems.AddFromFile($psprojectFile) | Out-Null
-		
-	}
-	else
-	{
-		Write-Host "$psprojectName not found."
-		return $null
-	}
-	
-	return [hashtable] @{ Content = [xml] $xml; FileName = [string] $psprojectFile } 
-}
-
-function AddUsing($psproj, [string] $path)
-{
-	$xml = $psproj.Content
-	$originPath = $psproj.FileName
-	
-	# Make the path to the targets file relative.
-	$projectUri = PathToUri $originPath
-	$targetUri = PathToUri $path
-	$relativePath = UriToPath $projectUri.MakeRelativeUri($targetUri)
-    $shortFileName = '*' + [System.IO.Path]::GetFileNameWithoutExtension($path) + '*'
-	$PatternsWeaver = $xml.Project.Using | where { $_.File -like $shortFileName}
-	
-	if ($PatternsWeaver)
-	{
-		Write-Host "Updating the Using element to $relativePath"
-	
-		$PatternsWeaver.SetAttribute("File", $relativePath)
-	} 
-	else 
-	{
-		Write-Host "Adding a Using element to $relativePath"
-	
-
-		$PatternsWeaver = $xml.CreateElement("Using", "http://schemas.postsharp.org/1.0/configuration")
-		$PatternsWeaver.SetAttribute("File", $relativePath)
-
-		$previousElement = $xml.Project.Using | Select -Last 1
-
-
-        if (!$previousElement)
-        {
-            $previousElement = $xml.Project.SearchPath | Select -Last 1
-        }
-
-        if (!$previousElement)
-        {
-            $previousElement = $xml.Project.Property | Select -Last 1
-        }
-        
-        if ( $previousElement )
-        {
-        	$xml.Project.InsertAfter($PatternsWeaver, $previousElement)
-        }
-        else
-        {
-            $xml.Project.PrependChild($PatternsWeaver)
-        }
-	}
-
-}
-
-function RemoveUsing($psproj, [string] $path)
-{
-	$xml = $psproj.Content
-	
-	Write-Host "Removing the Using element to $path"
-	
-	$shortFileName = '*' + [System.IO.Path]::GetFileNameWithoutExtension($path) + '*'
-		$xml.Project.Using | where { $_.File -like $shortFileName } | foreach {
-	  $_.ParentNode.RemoveChild($_)
-	}
-}
-
-function SetProperty($psproj, [string] $propertyName, [string] $propertyValue, [string] $compareValue )
-{
-	$xml = $psproj.Content
-	
-	$firstUsing = $xml.Project.Using | Select-Object -First 1
-
-	$property = $xml.Project.Property | where { $_.Name -eq $propertyName }
-	if (!$property -and !$compareValue )
-	{
-		Write-Host "Creating property $propertyName='$propertyValue'."
-	    
-		$property = $xml.CreateElement("Property", "http://schemas.postsharp.org/1.0/configuration")
-		$property.SetAttribute("Name", $propertyName)
-		$property.SetAttribute("Value", $propertyValue)
-	 	$xml.Project.InsertBefore($property, $firstUsing)
-	}
-	elseif ( !$compareValue -or $compareValue -eq $property.GetAttribute("Value") )
-	{
-		Write-Host "Updating property $propertyName='$propertyValue'."
-		
-		$property.SetAttribute("Value", $propertyValue)
-	}
-
-	
-}
-
-function Save($psproj)
-{
-	$filename = $psproj.FileName
-	
-	Write-Host "Saving file $filename"
-
-	$xml = $psproj.Content
-    $xml.Save($psproj.FileName)
-}
-
-function CommentOut([System.Xml.XmlNode] $xml)
-{
-	Write-Host "Commenting out $xml"
-	$fragment = $xml.OwnerDocument.CreateDocumentFragment()
-	$fragment.InnerXml = "<!--" + $xml.OuterXml + "-->"
-	$xml.ParentNode.InsertAfter( $fragment, $xml )
-	$xml.ParentNode.RemoveChild( $xml )
-}
-
 # SIG # Begin signature block
 # MIId/AYJKoZIhvcNAQcCoIId7TCCHekCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULTLPHPhNo+H+Xuj9XEI79HMU
-# m5qgghjsMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU1QBeFOO+TvIrYZo4Daos0vX+
+# NQygghjsMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -305,22 +169,22 @@ function CommentOut([System.Xml.XmlNode] $xml)
 # YSAoYykxMDEuMCwGA1UEAxMlVmVyaVNpZ24gQ2xhc3MgMyBDb2RlIFNpZ25pbmcg
 # MjAxMCBDQQIQDLZ6+7O4pymGCOAOlM81PjAJBgUrDgMCGgUAoHgwGAYKKwYBBAGC
 # NwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgor
-# BgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQURCupidOc
-# wlSdJLHGSKujQNJ7NicwDQYJKoZIhvcNAQEBBQAEggEAkm70UAo6Xjxq7JYwBySr
-# GVY09oaR5oMY64CDzeBTqn+/76mRSSYKMq1PAKAnPTdz2w3dPKjcsoVwVDD2e/0l
-# UY9IJMauL+rVUcSrZcN31T6Hkfjje5B2flyfSoNhB0CF8ojdddBJC7qNBx22zvd7
-# 1QvAWF5Gm7VHvKK6QBjjO6+DaBjyUt+qnF01rO1n60SlLNuf5G9MxfbR7HeKt/VD
-# sJRegG/AeTc/Zttl7dSsjLASxNY77OvexC1Az0vKT2IdpIufAxmVxcW1bitLJPpc
-# YYQUFZRlY0/delcraUsyCY0wRuMVSYbyTs6W3T6b152CfyCNS9VE1j04L/GRAQ3G
-# kqGCAgswggIHBgkqhkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVT
+# BgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUhu8oQdXW
+# b6iMUGPvRHuerBRI0UAwDQYJKoZIhvcNAQEBBQAEggEAHknlvBl/TQRRfaTVNJSZ
+# qHyhUmRDlNkrgn0Qg80pWqHDKSMaJG7ZGd6C5DEaz8zLhGShsu6iElDVcu8sFqgE
+# qb3XYfIqYTVjB5NSAq3K3Ueeq/FyMHEQq9Lz/3sMtE1a/iIR5DNgNwwBbYN5ocFc
+# Xh0R6gYnxqlH6UD64U+qBFm5QfyNjwbLtIjhdS01p/CyA02swvTM8r4fI9mfeHru
+# c06BCAH3PH5vUizpoSoILn5lrtRG4EVbortbRd5iQkMX7SuD/9XiYZCHufWA3bvK
+# OcFYBoMKbKEr8ocZguhDUj7lyIXqn65sNYkX+S/VrF5Opc/xYpWvqTpOrlGdGSGk
+# qqGCAgswggIHBgkqhkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVT
 # MR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50
 # ZWMgVGltZSBTdGFtcGluZyBTZXJ2aWNlcyBDQSAtIEcyAhAOz/Q4yP6/NW4E2GqY
 # GxpQMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqG
-# SIb3DQEJBTEPFw0xMzEwMzAxNTI5NTBaMCMGCSqGSIb3DQEJBDEWBBQcdjsc/6SZ
-# cz4+tKiL5zz6vdl0BjANBgkqhkiG9w0BAQEFAASCAQCg0wEw5bfe/DmteNXDKn6Q
-# 5Tw6BKb3Cvm50HcbppcLBZAU/Cqribmtt+kB6pONNfTe6xctMaBLkDTB3zEYzG8D
-# sBbs7Bezac9dpvT5wqAJxSEpnNVCGSKTq2FekDLCY+zmZRdRkU7kPnAk3M9faP3F
-# mLdPNCG0do/8lhfGIhSAxvLwl1HU2aTbv1ZQebQGbaRoXu+8Rgl/M/yflhqiy1QR
-# yn3ULCAEYEqhYvIxZ7GlbDPLruw/RQr77nCzHC/drPpom5RzvpI0xHlS+hsoChBI
-# b2yQdkYkQ8pZ6W+DYDAxm1rNz7QMKfcLnixpsFamzK+T8sYP4fO9tMN5zY7sSGY6
+# SIb3DQEJBTEPFw0xNDAxMDcxNTAyNTVaMCMGCSqGSIb3DQEJBDEWBBQno6Y2ta1H
+# KE0MMoFhGkIWmEaF1DANBgkqhkiG9w0BAQEFAASCAQBT29Kd/MWj+6j6l7RnnMm5
+# nyJTUfKvNx9oWKBTOK8Ji/eT6BX56uuG0SedNCwfHKnKQvWDPV0VPrnqpbx8Dhde
+# UN3LHfi8q8teh1heAxa4sU+1zGBfqDpG9kJScnh9mJTepSxoojK00FUdnyfxrpVh
+# AdcMQ5e+YwP16woCeaqkGZIYQhzreOwsahOnHcfHqev/9FrcTGK1jIMG0YKvCCYq
+# WxPGFWvatoSKh7aEvOjwMCIYmXBhA96dYvsy2s+9MdVw6iNvUwUfhL63kscEmHIG
+# H7vEqV6WMt8/IcI65GZ+fHzHcF4CwieFAp3dQ1Gp4gzpF6Fo3i35cs2xx8YECXO3
 # SIG # End signature block
