@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.syncButton = new System.Windows.Forms.Button();
             this.browseButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -38,33 +37,25 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.playlistRadio = new System.Windows.Forms.RadioButton();
+            this.favoritesRadio = new System.Windows.Forms.RadioButton();
             this.directoryPath = new System.Windows.Forms.TextBox();
-            this.apiKey = new System.Windows.Forms.TextBox();
-            this.playlistUrl = new System.Windows.Forms.TextBox();
+            this.url = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 16);
+            this.label1.Location = new System.Drawing.Point(61, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Playlist URL";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(45, 42);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "API Key";
+            this.label1.Text = "URL";
             // 
             // syncButton
             // 
-            this.syncButton.Location = new System.Drawing.Point(15, 116);
+            this.syncButton.Location = new System.Drawing.Point(15, 136);
             this.syncButton.Name = "syncButton";
             this.syncButton.Size = new System.Drawing.Size(390, 23);
             this.syncButton.TabIndex = 4;
@@ -74,7 +65,7 @@
             // 
             // browseButton
             // 
-            this.browseButton.Location = new System.Drawing.Point(353, 65);
+            this.browseButton.Location = new System.Drawing.Point(353, 85);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(52, 23);
             this.browseButton.TabIndex = 6;
@@ -85,7 +76,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 70);
+            this.label3.Location = new System.Drawing.Point(12, 90);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(78, 13);
             this.label3.TabIndex = 7;
@@ -94,7 +85,7 @@
             // deleteRemovedSongs
             // 
             this.deleteRemovedSongs.AutoSize = true;
-            this.deleteRemovedSongs.Location = new System.Drawing.Point(96, 93);
+            this.deleteRemovedSongs.Location = new System.Drawing.Point(96, 113);
             this.deleteRemovedSongs.Name = "deleteRemovedSongs";
             this.deleteRemovedSongs.Size = new System.Drawing.Size(239, 17);
             this.deleteRemovedSongs.TabIndex = 8;
@@ -105,7 +96,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 163);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 185);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(417, 22);
             this.statusStrip1.TabIndex = 9;
@@ -118,43 +109,58 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(15, 145);
+            this.progressBar.Location = new System.Drawing.Point(15, 165);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(390, 13);
             this.progressBar.TabIndex = 10;
             // 
+            // playlistRadio
+            // 
+            this.playlistRadio.AutoSize = true;
+            this.playlistRadio.Checked = true;
+            this.playlistRadio.Location = new System.Drawing.Point(96, 40);
+            this.playlistRadio.Name = "playlistRadio";
+            this.playlistRadio.Size = new System.Drawing.Size(207, 17);
+            this.playlistRadio.TabIndex = 11;
+            this.playlistRadio.TabStop = true;
+            this.playlistRadio.Text = "Download all songs from this playlist url";
+            this.playlistRadio.UseVisualStyleBackColor = true;
+            // 
+            // favoritesRadio
+            // 
+            this.favoritesRadio.AutoSize = true;
+            this.favoritesRadio.Location = new System.Drawing.Point(96, 64);
+            this.favoritesRadio.Name = "favoritesRadio";
+            this.favoritesRadio.Size = new System.Drawing.Size(292, 17);
+            this.favoritesRadio.TabIndex = 12;
+            this.favoritesRadio.Text = "Download all songs favorited by the user at this profile url";
+            this.favoritesRadio.UseVisualStyleBackColor = true;
+            // 
             // directoryPath
             // 
             this.directoryPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Soundcloud_Playlist_Downloader.Properties.Settings.Default, "LocalPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.directoryPath.Location = new System.Drawing.Point(96, 67);
+            this.directoryPath.Location = new System.Drawing.Point(96, 87);
             this.directoryPath.Name = "directoryPath";
             this.directoryPath.Size = new System.Drawing.Size(251, 20);
             this.directoryPath.TabIndex = 5;
             this.directoryPath.Text = global::Soundcloud_Playlist_Downloader.Properties.Settings.Default.LocalPath;
             // 
-            // apiKey
+            // url
             // 
-            this.apiKey.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Soundcloud_Playlist_Downloader.Properties.Settings.Default, "ApiKey", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.apiKey.Location = new System.Drawing.Point(96, 39);
-            this.apiKey.Name = "apiKey";
-            this.apiKey.Size = new System.Drawing.Size(309, 20);
-            this.apiKey.TabIndex = 3;
-            this.apiKey.Text = global::Soundcloud_Playlist_Downloader.Properties.Settings.Default.ApiKey;
-            // 
-            // playlistUrl
-            // 
-            this.playlistUrl.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Soundcloud_Playlist_Downloader.Properties.Settings.Default, "PlaylistUrl", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.playlistUrl.Location = new System.Drawing.Point(96, 13);
-            this.playlistUrl.Name = "playlistUrl";
-            this.playlistUrl.Size = new System.Drawing.Size(309, 20);
-            this.playlistUrl.TabIndex = 1;
-            this.playlistUrl.Text = global::Soundcloud_Playlist_Downloader.Properties.Settings.Default.PlaylistUrl;
+            this.url.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Soundcloud_Playlist_Downloader.Properties.Settings.Default, "PlaylistUrl", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.url.Location = new System.Drawing.Point(96, 13);
+            this.url.Name = "url";
+            this.url.Size = new System.Drawing.Size(309, 20);
+            this.url.TabIndex = 1;
+            this.url.Text = global::Soundcloud_Playlist_Downloader.Properties.Settings.Default.PlaylistUrl;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 185);
+            this.ClientSize = new System.Drawing.Size(417, 207);
+            this.Controls.Add(this.favoritesRadio);
+            this.Controls.Add(this.playlistRadio);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.deleteRemovedSongs);
@@ -162,9 +168,7 @@
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.directoryPath);
             this.Controls.Add(this.syncButton);
-            this.Controls.Add(this.apiKey);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.playlistUrl);
+            this.Controls.Add(this.url);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
@@ -180,9 +184,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox playlistUrl;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox apiKey;
+        private System.Windows.Forms.TextBox url;
         private System.Windows.Forms.Button syncButton;
         private System.Windows.Forms.TextBox directoryPath;
         private System.Windows.Forms.Button browseButton;
@@ -191,6 +193,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel status;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.RadioButton playlistRadio;
+        private System.Windows.Forms.RadioButton favoritesRadio;
     }
 }
 

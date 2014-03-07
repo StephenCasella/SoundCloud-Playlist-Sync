@@ -44,7 +44,7 @@ namespace Soundcloud_Playlist_Downloader
             {
                 args.Proceed();
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
     }
 }

@@ -14,6 +14,9 @@ namespace Soundcloud_Playlist_Downloader
 {
     public partial class Form1 : Form
     {
+
+        private const string CLIENT_ID = "93a4fae1bd98b84c9b4f6bf1cc838b4f";
+
         private PlaylistSync sync = null;
         private delegate void ProgressBarUpdate();
         private delegate void PerformSyncComplete();
@@ -65,9 +68,13 @@ namespace Soundcloud_Playlist_Downloader
                 {
                     status.Text = "Synchronizing... " + progressBar.Value + " of " + progressBar.Maximum + " songs downloaded.";
                 }
-                else if (sync.IsActive && completed)
+                else if (sync.IsActive && completed && !sync.IsError)
                 {
                     status.Text = "Playlist is already synchronized";
+                }
+                else if (sync.IsActive && completed && sync.IsError)
+                {
+                    status.Text = "An error prevented synchronization from starting";
                 }
                 else if (!sync.IsActive && syncButton.Text == AbortActionText)
                 {
@@ -128,8 +135,7 @@ namespace Soundcloud_Playlist_Downloader
 
         private void syncButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(playlistUrl.Text) &&
-                !string.IsNullOrWhiteSpace(apiKey.Text) &&
+            if (!string.IsNullOrWhiteSpace(url.Text) &&
                 !string.IsNullOrWhiteSpace(directoryPath.Text) &&
                 syncButton.Text == DefaultActionText)
             {
@@ -143,8 +149,13 @@ namespace Soundcloud_Playlist_Downloader
                 {
                     try
                     {
-                        sync.Synchronize(playlistUrl.Text, apiKey.Text,
-                            directoryPath.Text, deleteRemovedSongs.Checked);
+                        sync.Synchronize(
+                            url: url.Text, 
+                            mode: playlistRadio.Checked ? PlaylistSync.DownloadMode.Playlist : PlaylistSync.DownloadMode.Favorites,
+                            directory: directoryPath.Text, 
+                            deleteRemovedSongs: deleteRemovedSongs.Checked, 
+                            clientId: CLIENT_ID
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -180,14 +191,9 @@ namespace Soundcloud_Playlist_Downloader
                 syncButton.Enabled = false;
             }
             else if (syncButton.Text == DefaultActionText && 
-                string.IsNullOrWhiteSpace(playlistUrl.Text))
+                string.IsNullOrWhiteSpace(url.Text))
             {
-                status.Text = "Enter playlist url";
-            }
-            else if (syncButton.Text == DefaultActionText &&
-                string.IsNullOrWhiteSpace(apiKey.Text))
-            {
-                status.Text = "Enter API key";
+                status.Text = "Enter the download url";
             }
             else if (syncButton.Text == DefaultActionText &&
                 string.IsNullOrWhiteSpace(directoryPath.Text))
