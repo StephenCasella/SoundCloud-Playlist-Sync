@@ -37,8 +37,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.playlistRadio = new System.Windows.Forms.RadioButton();
             this.favoritesRadio = new System.Windows.Forms.RadioButton();
+            this.playlistRadio = new System.Windows.Forms.RadioButton();
             this.directoryPath = new System.Windows.Forms.TextBox();
             this.url = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
@@ -114,6 +114,16 @@
             this.progressBar.Size = new System.Drawing.Size(390, 13);
             this.progressBar.TabIndex = 10;
             // 
+            // favoritesRadio
+            // 
+            this.favoritesRadio.AutoSize = true;
+            this.favoritesRadio.Location = new System.Drawing.Point(96, 64);
+            this.favoritesRadio.Name = "favoritesRadio";
+            this.favoritesRadio.Size = new System.Drawing.Size(292, 17);
+            this.favoritesRadio.TabIndex = 12;
+            this.favoritesRadio.Text = "Download all songs favorited by the user at this profile url";
+            this.favoritesRadio.UseVisualStyleBackColor = true;
+            // 
             // playlistRadio
             // 
             this.playlistRadio.AutoSize = true;
@@ -125,16 +135,6 @@
             this.playlistRadio.TabStop = true;
             this.playlistRadio.Text = "Download all songs from this playlist url";
             this.playlistRadio.UseVisualStyleBackColor = true;
-            // 
-            // favoritesRadio
-            // 
-            this.favoritesRadio.AutoSize = true;
-            this.favoritesRadio.Location = new System.Drawing.Point(96, 64);
-            this.favoritesRadio.Name = "favoritesRadio";
-            this.favoritesRadio.Size = new System.Drawing.Size(292, 17);
-            this.favoritesRadio.TabIndex = 12;
-            this.favoritesRadio.Text = "Download all songs favorited by the user at this profile url";
-            this.favoritesRadio.UseVisualStyleBackColor = true;
             // 
             // directoryPath
             // 

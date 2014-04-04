@@ -573,6 +573,20 @@ namespace Soundcloud_Playlist_Downloader
                 XElement tracks = document.Element("tracks");
                 songs = ParseSongsFromTracksElement(tracks, localPath, clientId);
 
+                // handle the paginated results
+                if (tracks.Attributes().Any(x => x.Name == "next-href"))
+                {
+                    foreach (Song song in ParseSongsFromFavoritesXML
+                        (
+                            RetrieveXML(tracks.Attributes().Where(x => x.Name == "next-href")
+                                .First().Value), localPath, clientId)
+                        )
+                    {
+                        songs.Add(song);
+                    }
+                }
+
+
             }
             catch (Exception)
             {
@@ -583,7 +597,7 @@ namespace Soundcloud_Playlist_Downloader
             return songs;
         }
 
-        private string RetrieveXML(string url, string clientId)
+        private string RetrieveXML(string url, string clientId = null)
         {
             string xml = null;
 
@@ -591,7 +605,7 @@ namespace Soundcloud_Playlist_Downloader
             {
                 using (WebClient client = new WebClient()) 
                 {
-                    xml = client.DownloadString(url + "?client_id=" + clientId);
+                    xml = client.DownloadString(url + (string.IsNullOrWhiteSpace(clientId) ? "" : ("?client_id=" + clientId)));
                 }
             }
             catch (Exception)
