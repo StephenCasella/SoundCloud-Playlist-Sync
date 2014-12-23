@@ -1,5 +1,4 @@
-﻿using Soundcloud_Playlist_Downloader.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,13 +8,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Soundcloud_Playlist_Downloader.Properties;
 
 namespace Soundcloud_Playlist_Downloader
 {
     public partial class Form1 : Form
     {
 
-        private const string CLIENT_ID = "93a4fae1bd98b84c9b4f6bf1cc838b4f";
+        private string CLIENT_ID = "93a4fae1bd98b84c9b4f6bf1cc838b4f";
 
         private PlaylistSync sync = null;
         private delegate void ProgressBarUpdate();
@@ -43,7 +43,8 @@ namespace Soundcloud_Playlist_Downloader
             status.Text = "Ready";
             MinimumSize = new Size(Width, Height);
             MaximumSize = new Size(Width, Height);
-            
+
+
         }
 
         private void browseButton_Click(object sender, EventArgs e)
@@ -70,7 +71,7 @@ namespace Soundcloud_Playlist_Downloader
                 }
                 else if (sync.IsActive && completed && !sync.IsError)
                 {
-                    status.Text = "Playlist is already synchronized";
+                    status.Text = "Tracks are already synchronized";
                 }
                 else if (sync.IsActive && completed && sync.IsError)
                 {
@@ -140,7 +141,7 @@ namespace Soundcloud_Playlist_Downloader
                 syncButton.Text == DefaultActionText)
             {
                 syncButton.Text = AbortActionText;
-                status.Text = "Checking for playlist changes...";
+                status.Text = "Checking for track changes...";
                 completed = false;
                 progressBar.Value = 0;
                 progressBar.Maximum = 0;
@@ -150,8 +151,8 @@ namespace Soundcloud_Playlist_Downloader
                     try
                     {
                         sync.Synchronize(
-                            url: url.Text, 
-                            mode: playlistRadio.Checked ? PlaylistSync.DownloadMode.Playlist : PlaylistSync.DownloadMode.Favorites,
+                            url: url.Text,
+                            mode: playlistRadio.Checked ? PlaylistSync.DownloadMode.Playlist : favoritesRadio.Checked ? PlaylistSync.DownloadMode.Favorites : PlaylistSync.DownloadMode.Artist,
                             directory: directoryPath.Text, 
                             deleteRemovedSongs: deleteRemovedSongs.Checked, 
                             clientId: CLIENT_ID
