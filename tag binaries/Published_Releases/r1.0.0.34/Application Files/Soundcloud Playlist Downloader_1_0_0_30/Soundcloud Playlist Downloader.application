@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xrml="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <assemblyIdentity name="Soundcloud Playlist Downloader.application" version="1.0.0.30" publicKeyToken="97c663088db67188" language="neutral" processorArchitecture="msil" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <description asmv2:publisher="Soundcloud Playlist Downloader" asmv2:product="Soundcloud Playlist Downloader" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <deployment install="true" />
+  <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
+    <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
+  </compatibleFrameworks>
+  <dependency>
+    <dependentAssembly dependencyType="install" codebase="Application Files\Soundcloud Playlist Downloader_1_0_0_30\Soundcloud Playlist Downloader.exe.manifest" size="15847">
+      <assemblyIdentity name="Soundcloud Playlist Downloader.exe" version="1.0.0.30" publicKeyToken="97c663088db67188" language="neutral" processorArchitecture="msil" type="win32" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>ElezwsJlU+tIaD8G+wHjg75h04fd/eeFrYK4jK3whxM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+<publisherIdentity name="CN=stephen-PC\stephen" issuerKeyHash="f4051e472cae52b1f40bac64720f01349d9c1565" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>Gj66PX7kXYO0FOEIetj6SoYPdPE=</DigestValue></Reference></SignedInfo><SignatureValue>jU0jFioxh3V9TA5oh6grXZeobNgxqVSprfohlSwnK+eLw3aEQomYQvIj98vPlMiR+qzwMYC9K1MDEKeDR0HlvMRFBAmj9UkMFCZyaPK5NCfszBU+o744hajhbFzFripdn5VQ5+eOMjhowBvmZ2HcIHhYDc1i3GZFnBIvKgyNRY4=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>lJ2PNNlbjijzvJHk7XToOOaLVjbwatx0DL7QlrQXI9opBbHgUM1bHyPQfGTvKOwxHcmbP8gXUePecYEBXva3DQ1uVIR+l43U5ml3sZwjq8Mh+SBbsPAgSTLz4ez/0Fc+aRU/RzyF19HX/1/aYnaO9VSCDuxmUTjst0lMwWQAVhc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="f1740f864afad87a08e114b4835de47e3dba3e1a" Description="" Url=""><as:assemblyIdentity name="Soundcloud Playlist Downloader.application" version="1.0.0.30" publicKeyToken="97c663088db67188" language="neutral" processorArchitecture="msil" xmlns="urn:schemas-microsoft-com:asm.v1" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=stephen-PC\stephen</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>JuIA9NWM39HE5WWWQ1fMbTXHhSw=</DigestValue></Reference></SignedInfo><SignatureValue>bOm4rkliGg/hag4/VLnPltgq0GmmljwdKgfFFO0QeVomNVRtoJ9aagyH1m+JlZ8SFImvIRw4vx5sqpsWJ36i68o1o3dLEnuwpFVn8b4874XmkGuB5qMquFiTXIXqZ5X1QNONj/atOrOsPnPkJq+DujJKFTgcGotv6SUB8K2x6Ng=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>lJ2PNNlbjijzvJHk7XToOOaLVjbwatx0DL7QlrQXI9opBbHgUM1bHyPQfGTvKOwxHcmbP8gXUePecYEBXva3DQ1uVIR+l43U5ml3sZwjq8Mh+SBbsPAgSTLz4ez/0Fc+aRU/RzyF19HX/1/aYnaO9VSCDuxmUTjst0lMwWQAVhc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB4TCCAUqgAwIBAgIQVC9VV79bQ4FMppmU8EHxvDANBgkqhkiG9w0BAQUFADAvMS0wKwYDVQQDHiQAcwB0AGUAcABoAGUAbgAtAFAAQwBcAHMAdABlAHAAaABlAG4wHhcNMTUwMTAyMTYwMzIzWhcNMTYwMTAyMjIwMzIzWjAvMS0wKwYDVQQDHiQAcwB0AGUAcABoAGUAbgAtAFAAQwBcAHMAdABlAHAAaABlAG4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAJSdjzTZW44o87yR5O106Djmi1Y28GrcdAy+0Ja0FyPaKQWx4FDNWx8j0Hxk7yjsMR3Jmz/IF1Hj3nGBAV72tw0NblSEfpeN1OZpd7GcI6vDIfkgW7DwIEky8+Hs/9BXPmkVP0c8hdfR1/9f2mJ2jvVUgg7sZlE47LdJTMFkAFYXAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAQQS5d4wbrSVUV3T295vN2naBAEjWoumKXThTDz/PNB1QPM3pSkaGAUve9oUU4NQFTJerOzv1JPpJBaTFPaS0amRrqorYN9jiem7zlB5Nj6V4TiqzovsaFOrTyu/j1uCxtc7UtE3NDl+4NhgU8wZOgInSyQnXhQ8Zvsf7UyqUiP4=</X509Certificate></X509Data></KeyInfo><Object><as:Timestamp>MIILUAYJKoZIhvcNAQcCoIILQTCCCz0CAQExCzAJBgUrDgMCGgUAMIGRBgkqhkiG
+9w0BBwGggYMEgYBs6biuSWIaD+FqDj9Uuc+W2CrQaaaWPB0qB8UU7RB5WiY1VG2g
+n1pqDIfWb4mVnxIUia8hHDi/HmyqmxYnfqLryjWjd0sSe7CkVWfxvjzvheaQa4Hm
+oyq4WJNchepnlfVA042P9q06s6w+c+Qmr4O6MkoVOBwai2/pJQHwrbHo2KCCCJkw
+ggPuMIIDV6ADAgECAhB+k+v7fMZOWepLmnfUBvw7MA0GCSqGSIb3DQEBBQUAMIGL
+MQswCQYDVQQGEwJaQTEVMBMGA1UECBMMV2VzdGVybiBDYXBlMRQwEgYDVQQHEwtE
+dXJiYW52aWxsZTEPMA0GA1UEChMGVGhhd3RlMR0wGwYDVQQLExRUaGF3dGUgQ2Vy
+dGlmaWNhdGlvbjEfMB0GA1UEAxMWVGhhd3RlIFRpbWVzdGFtcGluZyBDQTAeFw0x
+MjEyMjEwMDAwMDBaFw0yMDEyMzAyMzU5NTlaMF4xCzAJBgNVBAYTAlVTMR0wGwYD
+VQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50ZWMgVGlt
+ZSBTdGFtcGluZyBTZXJ2aWNlcyBDQSAtIEcyMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAsayzSVRLlxwSCtgleZEiVypv3LgmxENza8K/LlBa+xTCdo5D
+ASVDtKHiRfTot3vDdMwi17SUAAL3Te2/tLdEJGvNX0U70UTOQxJzF4KLabQry5ke
+rHIbJk1xH7Ex3ftRYQJTpqr1SSwFeEWlL4nO55nn/oziVz89xpLcSvh7M+R5Cvvw
+dYhBnP/FA1GZqtdsn5Nph2Upg4XCYBTEyMk7FNrAgfAfDXTekiKryvf7dHwn5vdK
+G3+nw54trorqpuaqJxZ9YfeYcRG84lChS+Vd+uUOpyyfqmUg09iW6Mh8pU5IRP8Z
+4kQHkgvXaISAXWp4ZEXNYEZ+VMETfMV58cnBcQIDAQABo4H6MIH3MB0GA1UdDgQW
+BBRfmvVuXMzMdJrU3X3vP9vsTIAu3TAyBggrBgEFBQcBAQQmMCQwIgYIKwYBBQUH
+MAGGFmh0dHA6Ly9vY3NwLnRoYXd0ZS5jb20wEgYDVR0TAQH/BAgwBgEB/wIBADA/
+BgNVHR8EODA2MDSgMqAwhi5odHRwOi8vY3JsLnRoYXd0ZS5jb20vVGhhd3RlVGlt
+ZXN0YW1waW5nQ0EuY3JsMBMGA1UdJQQMMAoGCCsGAQUFBwMIMA4GA1UdDwEB/wQE
+AwIBBjAoBgNVHREEITAfpB0wGzEZMBcGA1UEAxMQVGltZVN0YW1wLTIwNDgtMTAN
+BgkqhkiG9w0BAQUFAAOBgQADCZuPee9/WTCq72i1+uMJHbtPggZdN1+mUp8Wjeoc
+kglEbvVt61h8MOj5aY0jcwsSb0eprjkR+Cqxm7Aaw47rWZYArc4MTbLQMaYIXCp6
+/OJ6HVdMqGUY6XlAYiWWbsfHN2qDIQiOQerd2Vc/HXdJhyoWBl6mOGoiEqNRGYN+
+tjCCBKMwggOLoAMCAQICEA7P9DjI/r81bgTYapgbGlAwDQYJKoZIhvcNAQEFBQAw
+XjELMAkGA1UEBhMCVVMxHTAbBgNVBAoTFFN5bWFudGVjIENvcnBvcmF0aW9uMTAw
+LgYDVQQDEydTeW1hbnRlYyBUaW1lIFN0YW1waW5nIFNlcnZpY2VzIENBIC0gRzIw
+HhcNMTIxMDE4MDAwMDAwWhcNMjAxMjI5MjM1OTU5WjBiMQswCQYDVQQGEwJVUzEd
+MBsGA1UEChMUU3ltYW50ZWMgQ29ycG9yYXRpb24xNDAyBgNVBAMTK1N5bWFudGVj
+IFRpbWUgU3RhbXBpbmcgU2VydmljZXMgU2lnbmVyIC0gRzQwggEiMA0GCSqGSIb3
+DQEBAQUAA4IBDwAwggEKAoIBAQCiYws5RLi7I6dESbsO/6HwYQpTk7CY260sD0rF
+bv+GPFNVDxXOBD8r/amWltm+YXkLW8lMhnbl4ENLIpXuwitDwZ/YaLSOQE/uhTi5
+EcUj8mRY8BUyb05Xoa6IpALXKh7NS+HdY9UXiTJbsF6ZWqidKFAOF+6W22E7RVEd
+zxJWC5JH/Kuu9mY9R6xwcueS51/NELnEg2SUGb0lgOHo0iKl0LoCeqF3k1tlw+4X
+dLxBhircCEyMkoyRLZ53RB9o1qh0d9sOWzKLVoszvdljyEmdOsXF6jML0vGjG/SL
+vtmzV4s73gSneiKyJK4ux3DFvk6DJgj7C72pT5kI4RAocqrNAgMBAAGjggFXMIIB
+UzAMBgNVHRMBAf8EAjAAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMA4GA1UdDwEB
+/wQEAwIHgDBzBggrBgEFBQcBAQRnMGUwKgYIKwYBBQUHMAGGHmh0dHA6Ly90cy1v
+Y3NwLndzLnN5bWFudGVjLmNvbTA3BggrBgEFBQcwAoYraHR0cDovL3RzLWFpYS53
+cy5zeW1hbnRlYy5jb20vdHNzLWNhLWcyLmNlcjA8BgNVHR8ENTAzMDGgL6Athito
+dHRwOi8vdHMtY3JsLndzLnN5bWFudGVjLmNvbS90c3MtY2EtZzIuY3JsMCgGA1Ud
+EQQhMB+kHTAbMRkwFwYDVQQDExBUaW1lU3RhbXAtMjA0OC0yMB0GA1UdDgQWBBRG
+xmmjDkoUHtVM2lJjFz9eNrwN5jAfBgNVHSMEGDAWgBRfmvVuXMzMdJrU3X3vP9vs
+TIAu3TANBgkqhkiG9w0BAQUFAAOCAQEAeDu0kSoATPCPYjA3eKOEJwdvGLLeJdyg
+1JQDqoZOJZ+aQAMc3c7jecshaAbatjK0bb/0LCZjM+RJZG0N5sNnDvcFpDVsfIkW
+xumy37Lp3SDGcQ/NlXTctlzevTcfQ3jmeLXNKAQgo6rxS8SIKZEOgNER/N1cdm5P
+Xg5FRkFuDbDqOJqxOtoJcRD8HHm0gHusafT9nLYMFivxf1sJPZtb4hbKE4FtAC44
+DagpjyzhsvRaqQGvFZwsL0kb2yK7w/54lFHDhrGCiF3wPbRRoXkzKy57udwgCRNx
+62oZW8/opTBXLIlJP7nPf8m/PiJoY1OavWl0rMUdPH+S4MO8HNgEdTGCAfgwggH0
+AgEBMHIwXjELMAkGA1UEBhMCVVMxHTAbBgNVBAoTFFN5bWFudGVjIENvcnBvcmF0
+aW9uMTAwLgYDVQQDEydTeW1hbnRlYyBUaW1lIFN0YW1waW5nIFNlcnZpY2VzIENB
+IC0gRzICEA7P9DjI/r81bgTYapgbGlAwCQYFKw4DAhoFAKBdMBgGCSqGSIb3DQEJ
+AzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE1MDEwMjE2NDI0NFowIwYJ
+KoZIhvcNAQkEMRYEFP7g6HqwTPimZdExUoqSl0aCDVMWMA0GCSqGSIb3DQEBAQUA
+BIIBACAN+qo2fFclFDY2lZJoPSSuA5J940vic916V2ir5Il3Xu5eR8SIeI79yfE4
+zbICUlu/X+yELu9PrJf2xeDojaRdy+SmmExxN7voRWtsjeXMfpXVMR//CtB12mCk
+NDXLnsmE5qa7SN7zFxZXWMTKvffehWEfPRJXs3KpYJvdJKpIvEWjNHhKV2S3Y/4q
+9Bu4/ZjUx6/PfnsIE7H/AM+lmYbyMsgPH5IzwFlP+IGcRo3RWsKXNDVnUGkvqYx3
+PRiNkCOB735axGN/o6+HIa2e9pIJw0oEgTSQXe8h/t4JPS7CqUDQsXuOIXidkVix
+xatoZKekYgfsYr22syKU9ms0e1s=
+</as:Timestamp></Object></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
