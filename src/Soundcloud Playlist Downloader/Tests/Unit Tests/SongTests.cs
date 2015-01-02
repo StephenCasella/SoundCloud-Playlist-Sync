@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Soundcloud_Playlist_Downloader.JsonPoco;
 
 namespace Tests.Unit_Tests
 {
@@ -12,12 +13,12 @@ namespace Tests.Unit_Tests
     class SongTests
     {
 
-        private static Song song = null;
+        private static Track song = null;
 
         [SetUp]
         public static void setup()
         {
-            song = new Song();
+            song = new Track();
         }
 
 

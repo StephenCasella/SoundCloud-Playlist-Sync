@@ -7,6 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Soundcloud_Playlist_Downloader.JsonPoco;
+using Soundcloud_Playlist_Downloader.Properties;
 
 namespace Soundcloud_Playlist_Downloader
 {
@@ -14,12 +17,11 @@ namespace Soundcloud_Playlist_Downloader
     {
         public bool IsError { get; private set; }
 
-        public enum DownloadMode { Playlist, Favorites };
+        public enum DownloadMode { Playlist, Favorites,Artist };
 
         public int TotalSongsToDownload { get; private set; }
         public int TotalSongsDownloaded { get; private set; }
 
-        private object SongsToDownloadLock = new object();
         private object SongsDownloadedLock = new object();
 
         public bool IsActive { get; set; }
@@ -54,26 +56,40 @@ namespace Soundcloud_Playlist_Downloader
 
             ResetProgress();
 
+            string apiURL = null;
+
             switch (mode)
             {
                 case DownloadMode.Playlist:
                     // determine whether it is an api url or a normal url. if it is a normal url, get the api url from it
                     // and then call SynchronizeFromPlaylistAPIUrl. Otherwise just call that method directly
-                    string apiPlaylistUrl = null;
+                    
                     if (!url.Contains("api.soundcloud.com"))
                     {
-                        apiPlaylistUrl = determineAPIPlaylistUrlForNormalUrl(url, clientId);
+                        apiURL = determineAPIUrlForNormalUrl(url, clientId,"playlists");
                     }
                     else 
                     {
-                        apiPlaylistUrl = url;
+                        apiURL = url;
                     }
-                    SynchronizeFromPlaylistAPIUrl(apiPlaylistUrl, clientId, directory, deleteRemovedSongs);
+                    SynchronizeFromPlaylistAPIUrl(apiURL, clientId, directory, deleteRemovedSongs);
                     break;
                 case DownloadMode.Favorites:
                     // get the username from the url and then call SynchronizeFromProfile
                     string username = parseUserIdFromProfileUrl(url);
                     SynchronizeFromProfile(username, clientId, directory, deleteRemovedSongs);
+                    break;
+                case DownloadMode.Artist:
+                    
+                    if (!url.Contains("api.soundcloud.com"))
+                    {
+                        apiURL = determineAPIUrlForNormalUrl(url, clientId,"tracks");
+                    }
+                    else 
+                    {
+                        apiURL = url;
+                    }
+                    SynchronizeFromArtistUrl(apiURL, clientId, directory, deleteRemovedSongs);
                     break;
                 default:
                     IsError = true;
@@ -81,7 +97,7 @@ namespace Soundcloud_Playlist_Downloader
             }
         }
 
-        private string determineAPIPlaylistUrlForNormalUrl(string url, string clientId)
+        private string determineAPIUrlForNormalUrl(string url, string clientId,string resulttype)
         {
 
             // parse the username from the url
@@ -104,7 +120,12 @@ namespace Soundcloud_Playlist_Downloader
             }
 
             // hit the users/username/playlists endpoint and match the playlist on the permalink
-            string userUrl = "https://api.soundcloud.com/users/" + username + "/playlists";
+            string userUrl = "https://api.soundcloud.com/users/" + username + "/" + resulttype;
+
+            if (resulttype == "tracks")
+            {
+                return userUrl;
+            }
 
             return "https://api.soundcloud.com/playlists/" +
                 retrievePlaylistId(userUrl, playlistName, clientId);
@@ -118,64 +139,26 @@ namespace Soundcloud_Playlist_Downloader
             // the client id embedded in the url
 
             // get the xml associated with the playlist from the soundcloud api
-            string playlistsXML = RetrieveXML(userApiUrl, clientId);
+            string playlistsJson = RetrieveJson(userApiUrl, clientId);
 
-            string playlistId = null;
 
-            try
+            var playlistItems= JsonConvert.DeserializeObject<JsonPoco.PlaylistItem[]>(playlistsJson);
+
+            var playListItem = playlistItems.FirstOrDefault(s => s.permalink == playlistName);
+
+            if (playListItem != null)
             {
-               XDocument document = XDocument.Parse(playlistsXML);
-
-                XElement playlists = document.Element("playlists");
-
-                foreach (XElement node in playlists.Nodes())
-                {
-
-                    if (node.Name == "playlist")
-                    {
-
-                        string id = null;
-                        string permalink = null;
-
-                        foreach (XElement playlistElement in node.Elements())
-                        {
-                            if (playlistElement.Name == "id")
-                            {
-                                id = playlistElement.Value;
-                            }
-                            else if (playlistElement.Name == "permalink")
-                            {
-                                permalink = playlistElement.Value;
-                            }
-                            else if (id != null && permalink != null)
-                            {
-                                break;
-                            }
-                        }
-
-                        if (permalink == playlistName)
-                        {
-                            playlistId = id;
-                            break;
-                        }
-                    }
-                }
-
-                if (playlistId == null)
-                {
-                    IsError = true;
-                    throw new Exception("Unable to find a matching playlist");
-                }
-                else
-                {
-                    return playlistId;
-                }
+                return playListItem.id.ToString();
             }
-            catch (Exception e)
+            else
             {
                 IsError = true;
-                throw new Exception("Error parsing user playlist information: " + e.Message);
+                throw new Exception("Unable to find a matching playlist");
+                
             }
+
+
+
 
         }
 
@@ -205,13 +188,16 @@ namespace Soundcloud_Playlist_Downloader
 
 
             // get the xml associated with the playlist from the soundcloud api
-            string tracksXML = RetrieveXML("https://api.soundcloud.com/users/" + username + "/favorites", clientId);
+            string tracksJson = RetrieveJson("https://api.soundcloud.com/users/" + username + "/favorites", clientId);
 
-            if (!string.IsNullOrWhiteSpace(tracksXML))
+
+            if (!string.IsNullOrWhiteSpace(tracksJson))
             {
-                // get the songs embedded in the playlist
-                IList<Song> allSongs = ParseSongsFromFavoritesXML(tracksXML, directoryPath, clientId);
-                Synchronize(allSongs, clientId, directoryPath, deleteRemovedSongs);
+                // get the tracks embedded in the playlist
+                IList<Track> allTracks = JsonConvert.DeserializeObject<Track[]>(tracksJson);
+                    
+                    //ParseSongsFromFavoritesXML(tracksJson, directoryPath, clientId);
+                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
 
             }
             else
@@ -222,29 +208,29 @@ namespace Soundcloud_Playlist_Downloader
 
         }
 
-        private void Synchronize(IList<Song> songs, string clientId, string directoryPath, bool deleteRemovedSongs)
+        private void Synchronize(IList<Track> tracks, string clientId, string directoryPath, bool deleteRemovedSongs)
         {
-            // determine which songs should be downloaded
-            IList<Song> songsToDownload = DetermineSongsToDownload(directoryPath, songs);
-            TotalSongsToDownload = songsToDownload.Count;
+            // determine which tracks should be downloaded
+            IList<Track> tracksToDownload = DetermineTracksToDownload(directoryPath, tracks);
+            TotalSongsToDownload = tracksToDownload.Count;
 
-            // determine which songs should be deleted
+            // determine which tracks should be deleted
             if (deleteRemovedSongs)
             {
-                DeleteRemovedSongs(directoryPath, songs);
+                DeleteRemovedTrack(directoryPath, tracks);
             }
 
-            // download the relevant songs
-            IList<Song> songsDownloaded = DownloadSongs(songsToDownload, clientId);
+            // download the relevant tracks
+            IList<Track> songsDownloaded = DownloadSongs(tracksToDownload, clientId);
 
             // update the manifest
             UpdateSyncManifest(songsDownloaded, directoryPath);
 
             // validation
-            if (songsDownloaded.Count != songsToDownload.Count && IsActive)
+            if (songsDownloaded.Count != tracksToDownload.Count && IsActive)
             {
                 IsError = true;
-                throw new Exception("Some songs failed to download. Please try again.");
+                throw new Exception("Some tracks failed to download. Please try again.");
             }
         }
 
@@ -253,13 +239,16 @@ namespace Soundcloud_Playlist_Downloader
         {
 
             // get the xml associated with the playlist from the soundcloud api
-            string playlistXML = RetrieveXML(playlistApiUrl, clientId);
+            string playlistJson = RetrieveJson(playlistApiUrl, clientId);
 
-            if (!string.IsNullOrWhiteSpace(playlistXML))
+            if (!string.IsNullOrWhiteSpace(playlistJson))
             {
-                // get the songs embedded in the playlist
-                IList<Song> allSongs = ParseSongsFromPlaylistXML(playlistXML, directoryPath, clientId);
-                Synchronize(allSongs, clientId, directoryPath, deleteRemovedSongs);
+
+                var selectedPlaylist = JsonConvert.DeserializeObject<JsonPoco.PlaylistItem>(playlistJson);
+
+                // get the tracks embedded in the playlist
+                IList<Track> allTracks = selectedPlaylist.tracks.ToList();
+                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
                 
             }
             else
@@ -269,6 +258,31 @@ namespace Soundcloud_Playlist_Downloader
             }
         }
 
+
+        internal void SynchronizeFromArtistUrl(string artistUrl, string clientId, string directoryPath, bool deleteRemovedSongs)
+        {
+
+            // get the xml associated with the playlist from the soundcloud api
+            string playlistJson = RetrieveJson(artistUrl, clientId);
+
+            if (!string.IsNullOrWhiteSpace(playlistJson))
+            {
+
+                var tracksToDownload = JsonConvert.DeserializeObject<JsonPoco.Track[]>(playlistJson);
+
+                // get the tracks embedded in the playlist
+                IList<Track> allTracks = tracksToDownload.ToList();
+                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
+
+            }
+            else
+            {
+                IsError = true;
+                throw new Exception("Playlist not found");
+            }
+        }
+
+
         private void ResetProgress()
         {
             TotalSongsDownloaded = 0;
@@ -277,13 +291,13 @@ namespace Soundcloud_Playlist_Downloader
             IsError = false;
         }
 
-        private void UpdateSyncManifest(IList<Song> songsDownloaded, string directoryPath)
+        private void UpdateSyncManifest(IList<Track> tracksDownloaded, string directoryPath)
         {
             IList<string> content = new List<string>();
 
-            foreach (Song song in songsDownloaded)
+            foreach (Track track in tracksDownloaded)
             {
-                content.Add(song.EffectiveDownloadUrl + "," + song.LocalPath);
+                content.Add(track.EffectiveDownloadUrl + "," + track.LocalPath);
             }
 
             try
@@ -306,23 +320,23 @@ namespace Soundcloud_Playlist_Downloader
 
         }
 
-        private IList<Song> DownloadSongs(IList<Song> songsToDownload, string apiKey)
+        private IList<Track> DownloadSongs(IList<Track> TracksToDownload, string apiKey)
         {
-            IList<Song> songsDownloaded = new List<Song>();
-            object songLock = new object();
+            IList<Track> songsDownloaded = new List<Track>();
+            object trackLock = new object();
 
-            Parallel.ForEach(songsToDownload, 
-                new ParallelOptions() {MaxDegreeOfParallelism = 3},
-                song =>
+            Parallel.ForEach(TracksToDownload, 
+                new ParallelOptions() {MaxDegreeOfParallelism = Settings.Default.ConcurrentDownloads},
+                track =>
             {
                 try
                 {
-                    if (DownloadSong(song, apiKey))
+                    if (DownloadTrack(track, apiKey))
                     {
 
-                        lock (songLock)
+                        lock (trackLock)
                         {
-                            songsDownloaded.Add(song);
+                            songsDownloaded.Add(track);
                         }
                     }
 
@@ -339,7 +353,7 @@ namespace Soundcloud_Playlist_Downloader
         }
 
         [SafeRetry]
-        private bool DownloadSong(Song song, string apiKey)
+        private bool DownloadTrack(Track song, string apiKey)
         {
             bool downloaded = false;
             if (IsActive)
@@ -354,7 +368,7 @@ namespace Soundcloud_Playlist_Downloader
 
                         try
                         {
-                            WebRequest request = WebRequest.Create(song.EffectiveDownloadUrl);
+                            WebRequest request = WebRequest.Create(song.EffectiveDownloadUrl + string.Format("?client_id={0}",apiKey));
 
                             request.Method = "HEAD";
                             using (WebResponse response = request.GetResponse())
@@ -366,7 +380,7 @@ namespace Soundcloud_Playlist_Downloader
                         catch (Exception)
                         {
                             // the download link might be invalid
-                            WebRequest request = WebRequest.Create(song.StreamUrl);
+                            WebRequest request = WebRequest.Create(song.stream_url + string.Format("?client_id={0}", apiKey));
 
                             request.Method = "HEAD";
                             using (WebResponse response = request.GetResponse())
@@ -383,7 +397,7 @@ namespace Soundcloud_Playlist_Downloader
                         song.LocalPath += ".mp3";
                     }
 
-                    client.DownloadFile(song.EffectiveDownloadUrl, song.LocalPath);
+                    client.DownloadFile(song.EffectiveDownloadUrl+string.Format("?client_id={0}",apiKey), song.LocalPath);
 
 
                     // metadata tagging
@@ -391,8 +405,8 @@ namespace Soundcloud_Playlist_Downloader
                     tagFile.Tag.AlbumArtists = new string[] { song.Username };
                     tagFile.Tag.Performers = new string[] { song.Username };
                     tagFile.Tag.Title = song.Title;
-                    tagFile.Tag.Genres = new string[] { song.Genre };
-                    tagFile.Tag.Comment = song.Description;
+                    tagFile.Tag.Genres = new string[] { song.genre };
+                    tagFile.Tag.Comment = song.description;
                     tagFile.Save();
 
                     lock (SongsDownloadedLock)
@@ -407,9 +421,9 @@ namespace Soundcloud_Playlist_Downloader
 
         }
 
-        private void DeleteRemovedSongs(string directoryPath, IList<Song> allSongs)
+        private void DeleteRemovedTrack(string directoryPath, IList<Track> allTracks)
         {
-            IList<Song> songsToDelete = new List<Song>();
+            IList<Track> songsToDelete = new List<Track>();
             string manifestPath = DetermineManifestPath(directoryPath);
 
             try
@@ -422,9 +436,9 @@ namespace Soundcloud_Playlist_Downloader
 
                     foreach (string songDownloaded in songsDownloaded)
                     {
-                        string localPath = ParseSongPath(songDownloaded);
+                        string localPath = ParseTrackPath(songDownloaded);
 
-                        if (!allSongs.Select(song => song.LocalPath).Contains(localPath))
+                        if (!allTracks.Select(song => song.LocalPath).Contains(localPath))
                         {
                             File.Delete(localPath);
                         }
@@ -442,178 +456,56 @@ namespace Soundcloud_Playlist_Downloader
             catch (Exception)
             {
                 IsError = true;
-                throw new Exception("Unable to read manifest to determine songs to delete");
+                throw new Exception("Unable to read manifest to determine tracks to delete");
             }
             
         }
 
-        private IList<Song> DetermineSongsToDownload(string directoryPath, IList<Song> allSongs)
+        private IList<Track> DetermineTracksToDownload(string directoryPath, IList<Track> allSongs)
         {
+
+            allSongs= allSongs.Select(c => { c.LocalPath = Path.Combine(directoryPath,c.Sanitize(c.Title)); return c; }).ToList();
+
             string manifestPath = DetermineManifestPath(directoryPath);
 
             IList<string> streamUrls = new List<string>();
 
             if (File.Exists(manifestPath))
             {
-                foreach (string song in File.ReadAllLines(manifestPath))
+                foreach (string track in File.ReadAllLines(manifestPath))
                 {
-                    streamUrls.Add(ParseSongPath(song));
+                    streamUrls.Add(ParseTrackPath(track));
                 }
             }
 
             return allSongs.Where(s => !streamUrls.Contains(s.EffectiveDownloadUrl)).ToList();
         }
 
-        private IList<Song> ParseSongsFromTracksElement(XElement tracksElement, string localPath, string clientId)
+        
+
+       
+
+      
+
+        private string RetrieveJson(string url, string clientId = null)
         {
-            IList<Song> songs = new List<Song>();
-
-            foreach (XElement track in tracksElement.Elements())
-            {
-                if (track.Name == "track")
-                {
-
-                    Song song = new Song();
-
-                    foreach (XElement attribute in track.Elements())
-                    {
-
-                        if (attribute.Name == "title")
-                        {
-                            song.Title = attribute.Value;
-                        }
-                        else if (attribute.Name == "user")
-                        {
-                            foreach (XElement userNode in attribute.Elements())
-                            {
-                                if (userNode.Name == "username")
-                                {
-                                    song.Username = userNode.Value;
-                                    break;
-                                }
-                            }
-                        }
-                        else if (attribute.Name == "stream-url")
-                        {
-                            song.StreamUrl = attribute.Value + "?client_id=" + clientId;
-                        }
-                        else if (attribute.Name == "download-url")
-                        {
-                            song.DownloadUrl = attribute.Value + "?client_id=" + clientId;
-                        }
-                        else if (attribute.Name == "genre")
-                        {
-                            song.Genre = attribute.Value;
-                        }
-                        else if (attribute.Name == "description")
-                        {
-                            song.Description = attribute.Value;
-                        }
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(song.Title) &&
-                        !string.IsNullOrWhiteSpace(song.Username) &&
-                        !string.IsNullOrWhiteSpace(song.EffectiveDownloadUrl))
-                    {
-
-
-                        song.LocalPath = Path.Combine(Path.Combine(localPath, song.Username), song.Title);
-                        songs.Add(song);
-                    }
-                    else
-                    {
-                        // song is not streamable or downloadble
-                    }
-
-                }
-            }
-
-            return songs;
-        }
-
-        private IList<Song> ParseSongsFromPlaylistXML(string playlistXML, string localPath, string clientId)
-        {
-            IList<Song> songs = new List<Song>();
-
-            try
-            {
-                XDocument document = XDocument.Parse(playlistXML);
-
-                XElement playlist = document.Element("playlist");
-
-                foreach (XElement node in playlist.Nodes())
-                {
-                    if (node.Name == "tracks")
-                    {
-                        songs = ParseSongsFromTracksElement(node, localPath, clientId);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                IsError = true;
-                throw new Exception("An error occurred parsing the playlist XML. Are you using the correct link " +
-                    "(i.e. https//api.soundcloud.com/playlist/...)? See " +
-                    "https://originaltechsolutions.blogspot.com/2013/11/soundcloud-playlist-downloader-free.html" +
-                    " for instructions on how to determine the API link for a playlist.");
-            }
-
-            return songs;
-        }
-
-
-        private IList<Song> ParseSongsFromFavoritesXML(string tracksXML, string localPath, string clientId) {
-                        
-            IList<Song> songs = new List<Song>();
-
-            try
-            {
-                XDocument document = XDocument.Parse(tracksXML);
-
-                XElement tracks = document.Element("tracks");
-                songs = ParseSongsFromTracksElement(tracks, localPath, clientId);
-
-                // handle the paginated results
-                if (tracks.Attributes().Any(x => x.Name == "next-href"))
-                {
-                    foreach (Song song in ParseSongsFromFavoritesXML
-                        (
-                            RetrieveXML(tracks.Attributes().Where(x => x.Name == "next-href")
-                                .First().Value), localPath, clientId)
-                        )
-                    {
-                        songs.Add(song);
-                    }
-                }
-
-
-            }
-            catch (Exception)
-            {
-                IsError = true;
-                throw new Exception("An error occurred parsing the favorites XML. Are you using the correct link?");
-            }
-
-            return songs;
-        }
-
-        private string RetrieveXML(string url, string clientId = null)
-        {
-            string xml = null;
-
+            
+            string json = null;
+            
             try
             {
                 using (WebClient client = new WebClient()) 
                 {
-                    xml = client.DownloadString(url + (string.IsNullOrWhiteSpace(clientId) ? "" : ("?client_id=" + clientId)));
+                    json = client.DownloadString(url + (string.IsNullOrWhiteSpace(clientId) ? "" : ("?client_id=" + clientId)));
                 }
+             
             }
             catch (Exception)
             {
                 // Nothing to do here
             }
 
-            return xml;
+            return json;
         }
 
         private string DetermineManifestPath(string directoryPath)
@@ -621,7 +513,7 @@ namespace Soundcloud_Playlist_Downloader
             return Path.Combine(directoryPath, "manifest");
         }
 
-        private string ParseSongPath(string csv)
+        private string ParseTrackPath(string csv)
         {
             return csv != null && csv.IndexOf(',') >= 0 ? csv.Split(',')[0] : csv;
         }
@@ -629,79 +521,5 @@ namespace Soundcloud_Playlist_Downloader
 
     }
 
-    public class Song
-    {
-
-        private string _title = null;
-        public string Title
-        {
-            get
-            {
-                return EffectiveDownloadUrl == DownloadUrl ? _title + "_High_Quality" : _title;
-            }
-            set
-            {
-                _title = Sanitize(value);
-            }
-        }
-
-        private string _username = null;
-        public string Username
-        {
-            get
-            {
-                return _username;
-            }
-            set
-            {
-                _username = Sanitize(value);
-            }
-        }
-
-        public string StreamUrl { get; set; }
-        public string DownloadUrl { get; set; }
-        public bool IsHD { get { return DownloadUrl == EffectiveDownloadUrl; } }
-        public string EffectiveDownloadUrl
-        {
-            get
-            {
-                string url = !string.IsNullOrWhiteSpace(DownloadUrl) ?
-                    DownloadUrl : StreamUrl;
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    return url.Replace("\r", "").Replace("\n", "");
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
-        private string _path = null;
-        public string LocalPath
-        {
-            get
-            {
-                return _path;
-            }
-            set
-            {
-                _path = value;
-            }
-        }
-
-        public string Genre { get; set; }
-        public string Description { get; set; }
-
-        public string Sanitize(string input)
-        {
-            Regex regex = new Regex(@"[^\w\s\d-]");
-            return input != null ? 
-                regex.Replace(input.Replace("&amp;", "and")
-                    .Replace("&", "and").Replace(".", "_"),
-                   string.Empty)
-                : null;
-        }
-    }
+   
 }

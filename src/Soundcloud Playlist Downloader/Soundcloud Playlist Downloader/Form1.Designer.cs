@@ -39,6 +39,7 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.favoritesRadio = new System.Windows.Forms.RadioButton();
             this.playlistRadio = new System.Windows.Forms.RadioButton();
+            this.artistRadio = new System.Windows.Forms.RadioButton();
             this.directoryPath = new System.Windows.Forms.TextBox();
             this.url = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
@@ -55,7 +56,7 @@
             // 
             // syncButton
             // 
-            this.syncButton.Location = new System.Drawing.Point(15, 136);
+            this.syncButton.Location = new System.Drawing.Point(15, 169);
             this.syncButton.Name = "syncButton";
             this.syncButton.Size = new System.Drawing.Size(390, 23);
             this.syncButton.TabIndex = 4;
@@ -65,7 +66,7 @@
             // 
             // browseButton
             // 
-            this.browseButton.Location = new System.Drawing.Point(353, 85);
+            this.browseButton.Location = new System.Drawing.Point(353, 118);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(52, 23);
             this.browseButton.TabIndex = 6;
@@ -76,7 +77,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 90);
+            this.label3.Location = new System.Drawing.Point(12, 123);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(78, 13);
             this.label3.TabIndex = 7;
@@ -85,7 +86,7 @@
             // deleteRemovedSongs
             // 
             this.deleteRemovedSongs.AutoSize = true;
-            this.deleteRemovedSongs.Location = new System.Drawing.Point(96, 113);
+            this.deleteRemovedSongs.Location = new System.Drawing.Point(96, 146);
             this.deleteRemovedSongs.Name = "deleteRemovedSongs";
             this.deleteRemovedSongs.Size = new System.Drawing.Size(239, 17);
             this.deleteRemovedSongs.TabIndex = 8;
@@ -96,9 +97,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 185);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 222);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(417, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(411, 22);
             this.statusStrip1.TabIndex = 9;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -109,7 +110,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(15, 165);
+            this.progressBar.Location = new System.Drawing.Point(15, 198);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(390, 13);
             this.progressBar.TabIndex = 10;
@@ -136,10 +137,20 @@
             this.playlistRadio.Text = "Download all songs from this playlist url";
             this.playlistRadio.UseVisualStyleBackColor = true;
             // 
+            // artistRadio
+            // 
+            this.artistRadio.AutoSize = true;
+            this.artistRadio.Location = new System.Drawing.Point(96, 87);
+            this.artistRadio.Name = "artistRadio";
+            this.artistRadio.Size = new System.Drawing.Size(194, 17);
+            this.artistRadio.TabIndex = 13;
+            this.artistRadio.Text = "Download all songs by this artists url";
+            this.artistRadio.UseVisualStyleBackColor = true;
+            // 
             // directoryPath
             // 
             this.directoryPath.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Soundcloud_Playlist_Downloader.Properties.Settings.Default, "LocalPath", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.directoryPath.Location = new System.Drawing.Point(96, 87);
+            this.directoryPath.Location = new System.Drawing.Point(96, 120);
             this.directoryPath.Name = "directoryPath";
             this.directoryPath.Size = new System.Drawing.Size(251, 20);
             this.directoryPath.TabIndex = 5;
@@ -158,7 +169,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 207);
+            this.ClientSize = new System.Drawing.Size(411, 244);
+            this.Controls.Add(this.artistRadio);
             this.Controls.Add(this.favoritesRadio);
             this.Controls.Add(this.playlistRadio);
             this.Controls.Add(this.progressBar);
@@ -195,6 +207,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.RadioButton playlistRadio;
         private System.Windows.Forms.RadioButton favoritesRadio;
+        private System.Windows.Forms.RadioButton artistRadio;
     }
 }
 
