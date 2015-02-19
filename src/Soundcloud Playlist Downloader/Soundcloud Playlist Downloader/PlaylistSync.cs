@@ -402,11 +402,21 @@ namespace Soundcloud_Playlist_Downloader
 
                     // metadata tagging
                     TagLib.File tagFile = TagLib.File.Create(song.LocalPath);
-                    tagFile.Tag.AlbumArtists = new string[] { song.Username };
-                    tagFile.Tag.Performers = new string[] { song.Username };
                     tagFile.Tag.Title = song.Title;
-                    tagFile.Tag.Genres = new string[] { song.genre };
-                    tagFile.Tag.Comment = song.description;
+                    if (!String.IsNullOrEmpty(song.Username))
+                    {
+                        tagFile.Tag.AlbumArtists = new string[] { song.Username };
+                        tagFile.Tag.Performers = new string[] { song.Username };
+                    }                    
+                    if (!String.IsNullOrEmpty(song.genre))
+                    {
+                        tagFile.Tag.Genres = new string[] { song.genre };
+                    }
+                    if (!String.IsNullOrEmpty(song.description))
+                    {
+                        tagFile.Tag.Comment = song.description;
+                    }                    
+                    
                     tagFile.Save();
 
                     lock (SongsDownloadedLock)
