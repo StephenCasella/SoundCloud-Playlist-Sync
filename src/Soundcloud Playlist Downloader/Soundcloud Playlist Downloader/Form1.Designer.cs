@@ -99,7 +99,7 @@
             this.status});
             this.statusStrip1.Location = new System.Drawing.Point(0, 222);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(411, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(421, 22);
             this.statusStrip1.TabIndex = 9;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -169,7 +169,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 244);
+            this.ClientSize = new System.Drawing.Size(421, 244);
             this.Controls.Add(this.artistRadio);
             this.Controls.Add(this.favoritesRadio);
             this.Controls.Add(this.playlistRadio);

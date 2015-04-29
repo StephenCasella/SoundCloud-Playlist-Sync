@@ -17,10 +17,10 @@ namespace Soundcloud_Playlist_Downloader
     {
         public bool IsError { get; private set; }
 
-        public enum DownloadMode { Playlist, Favorites,Artist };
+        public enum DownloadMode { Playlist, Favorites, Artist };
 
-        public int TotalSongsToDownload { get; private set; }
-        public int TotalSongsDownloaded { get; private set; }
+        public IList<Track> SongsToDownload { get; private set; }
+        public IList<Track> SongsDownloaded { get; private set; }
 
         private object SongsDownloadedLock = new object();
 
@@ -28,6 +28,8 @@ namespace Soundcloud_Playlist_Downloader
 
         public PlaylistSync()
         {
+            SongsToDownload = new List<Track>();
+            SongsDownloaded = new List<Track>();
             ResetProgress();
         }
 
@@ -133,16 +135,16 @@ namespace Soundcloud_Playlist_Downloader
 
         private string retrievePlaylistId(string userApiUrl, string playlistName, string clientId)
         {
+
             // grab the xml from the url, parse each playlist out, match the name based on the
             // permalink, and return the id of the matching playlist.
             // a method already exists for downloading xml, so use that and refactor this to not have
             // the client id embedded in the url
 
-            // get the xml associated with the playlist from the soundcloud api
             string playlistsJson = RetrieveJson(userApiUrl, clientId);
 
 
-            var playlistItems= JsonConvert.DeserializeObject<JsonPoco.PlaylistItem[]>(playlistsJson);
+            var playlistItems = JsonConvert.DeserializeObject<JsonPoco.PlaylistItem[]>(playlistsJson);
 
             var playListItem = playlistItems.FirstOrDefault(s => s.permalink == playlistName);
 
@@ -154,11 +156,8 @@ namespace Soundcloud_Playlist_Downloader
             {
                 IsError = true;
                 throw new Exception("Unable to find a matching playlist");
-                
+
             }
-
-
-
 
         }
 
@@ -181,38 +180,63 @@ namespace Soundcloud_Playlist_Downloader
             }
         }
 
+        internal IList<Track> EnumerateTracksFromUrl(string url, string clientId, bool isRawTracksUrl)
+        {
+            // get the json associated with the playlist from the soundcloud api
+            int limit = 200;
+            int offset = 0;
+            IList<Track> tracks = new List<Track>();
+
+            try
+            {
+                // get the tracks embedded in the playlist
+
+
+                bool tracksAdded = true;
+
+                while (tracksAdded)
+                {
+                    string tracksJson = RetrieveJson(url, clientId, limit, offset);
+                    IList<Track> currentTracks = isRawTracksUrl ? JsonConvert.DeserializeObject<Track[]>(tracksJson) : 
+                        JsonConvert.DeserializeObject<PlaylistItem>(tracksJson).tracks;
+
+                    if (currentTracks != null && currentTracks.Any())
+                    {
+                        foreach (Track track in currentTracks)
+                        {
+                            tracks.Add(track);
+                        }
+                        tracksAdded = true;
+                    }
+                    else
+                    {
+                        tracksAdded = false;
+                    }
+
+                    offset += limit;
+                }
+                
+            }
+            catch (Exception)
+            {
+                IsError = true;
+                throw new Exception("Errors occurred retrieving the tracks list information. Double check your url.");
+            }
+
+            return tracks;
+        }
 
         internal void SynchronizeFromProfile(string username, string clientId, string directoryPath, bool deleteRemovedSongs)
         {
             // hit the /username/favorites endpoint for the username in the url, then download all the tracks
-
-
-            // get the xml associated with the playlist from the soundcloud api
-            string tracksJson = RetrieveJson("https://api.soundcloud.com/users/" + username + "/favorites", clientId);
-
-
-            if (!string.IsNullOrWhiteSpace(tracksJson))
-            {
-                // get the tracks embedded in the playlist
-                IList<Track> allTracks = JsonConvert.DeserializeObject<Track[]>(tracksJson);
-                    
-                    //ParseSongsFromFavoritesXML(tracksJson, directoryPath, clientId);
-                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
-
-            }
-            else
-            {
-                IsError = true;
-                throw new Exception("Playlist not found");
-            }
-
+            IList<Track> tracks = EnumerateTracksFromUrl("https://api.soundcloud.com/users/" + username + "/favorites", clientId, true);
+            Synchronize(tracks, clientId, directoryPath, deleteRemovedSongs);
         }
 
         private void Synchronize(IList<Track> tracks, string clientId, string directoryPath, bool deleteRemovedSongs)
         {
             // determine which tracks should be downloaded
-            IList<Track> tracksToDownload = DetermineTracksToDownload(directoryPath, tracks);
-            TotalSongsToDownload = tracksToDownload.Count;
+            SongsToDownload = DetermineTracksToDownload(directoryPath, tracks);
 
             // determine which tracks should be deleted
             if (deleteRemovedSongs)
@@ -221,72 +245,43 @@ namespace Soundcloud_Playlist_Downloader
             }
 
             // download the relevant tracks
-            IList<Track> songsDownloaded = DownloadSongs(tracksToDownload, clientId);
+            IList<Track> songsDownloaded = DownloadSongs(SongsToDownload, clientId);
 
             // update the manifest
             UpdateSyncManifest(songsDownloaded, directoryPath);
 
             // validation
-            if (songsDownloaded.Count != tracksToDownload.Count && IsActive)
+            if (songsDownloaded.Count != SongsToDownload.Count && IsActive)
             {
                 IsError = true;
-                throw new Exception("Some tracks failed to download. Please try again.");
+                throw new Exception(
+                        "Some tracks failed to download. You might need to try a few more times before they can download correctly. " +
+                        "The following tracks were not downloaded:" + Environment.NewLine +
+                        string.Join(Environment.NewLine, SongsToDownload.Except(SongsDownloaded).Select(x => "Title: " + x.Title + ", Artist: " + x.Artist))
+                    );
             }
         }
 
 
         internal void SynchronizeFromPlaylistAPIUrl(string playlistApiUrl, string clientId, string directoryPath, bool deleteRemovedSongs)
         {
-
-            // get the xml associated with the playlist from the soundcloud api
-            string playlistJson = RetrieveJson(playlistApiUrl, clientId);
-
-            if (!string.IsNullOrWhiteSpace(playlistJson))
-            {
-
-                var selectedPlaylist = JsonConvert.DeserializeObject<JsonPoco.PlaylistItem>(playlistJson);
-
-                // get the tracks embedded in the playlist
-                IList<Track> allTracks = selectedPlaylist.tracks.ToList();
-                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
-                
-            }
-            else
-            {
-                IsError = true;
-                throw new Exception("Playlist not found");
-            }
+            IList<Track> tracks = EnumerateTracksFromUrl(playlistApiUrl, clientId, false);
+            Synchronize(tracks, clientId, directoryPath, deleteRemovedSongs);
         }
 
 
         internal void SynchronizeFromArtistUrl(string artistUrl, string clientId, string directoryPath, bool deleteRemovedSongs)
         {
 
-            // get the xml associated with the playlist from the soundcloud api
-            string playlistJson = RetrieveJson(artistUrl, clientId);
-
-            if (!string.IsNullOrWhiteSpace(playlistJson))
-            {
-
-                var tracksToDownload = JsonConvert.DeserializeObject<JsonPoco.Track[]>(playlistJson);
-
-                // get the tracks embedded in the playlist
-                IList<Track> allTracks = tracksToDownload.ToList();
-                Synchronize(allTracks, clientId, directoryPath, deleteRemovedSongs);
-
-            }
-            else
-            {
-                IsError = true;
-                throw new Exception("Playlist not found");
-            }
+            IList<Track> tracks = EnumerateTracksFromUrl(artistUrl, clientId, true);
+            Synchronize(tracks, clientId, directoryPath, deleteRemovedSongs);
         }
 
 
         private void ResetProgress()
         {
-            TotalSongsDownloaded = 0;
-            TotalSongsToDownload = 0;
+            SongsDownloaded.Clear();
+            SongsToDownload.Clear();
             IsActive = true;
             IsError = false;
         }
@@ -421,7 +416,7 @@ namespace Soundcloud_Playlist_Downloader
 
                     lock (SongsDownloadedLock)
                     {
-                        ++TotalSongsDownloaded;
+                        SongsDownloaded.Add(song);
                         downloaded = true;
                     }
                 }
@@ -497,7 +492,7 @@ namespace Soundcloud_Playlist_Downloader
 
       
 
-        private string RetrieveJson(string url, string clientId = null)
+        private string RetrieveJson(string url, string clientId, int? limit = null, int? offset = null)
         {
             
             string json = null;
@@ -506,7 +501,20 @@ namespace Soundcloud_Playlist_Downloader
             {
                 using (WebClient client = new WebClient()) 
                 {
-                    json = client.DownloadString(url + (string.IsNullOrWhiteSpace(clientId) ? "" : ("?client_id=" + clientId)));
+                    if (url != null && !url.Contains("client_id="))
+                    {
+                        url += (url.Contains("?") ? "&" : "?") + "client_id=" + clientId;
+                    }
+                    if (limit != null)
+                    {
+                        url += "&limit=" + limit;
+                    }
+                    if (offset != null)
+                    {
+                        url += "&offset=" + offset;
+                    }
+
+                    json = client.DownloadString(url);
                 }
              
             }

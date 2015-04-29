@@ -83,7 +83,7 @@ namespace Soundcloud_Playlist_Downloader
                 }
                 else if (sync.IsActive)
                 {
-                    status.Text = "Synchronizing...";
+                    status.Text = "Enumerating tracks to download...";
                 }
                 else if (!sync.IsActive)
                 {
@@ -109,8 +109,8 @@ namespace Soundcloud_Playlist_Downloader
         private void UpdateProgressBar()
         {
             progressBar.Minimum = 0;
-            progressBar.Maximum = sync.TotalSongsToDownload;
-            progressBar.Value = sync.TotalSongsDownloaded;
+            progressBar.Maximum = sync.SongsToDownload.Count;
+            progressBar.Value = sync.SongsDownloaded.Count;
         }
 
         private void InvokeUpdateProgressBar()

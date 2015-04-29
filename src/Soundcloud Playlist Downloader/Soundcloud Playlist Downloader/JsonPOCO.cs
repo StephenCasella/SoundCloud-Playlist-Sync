@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Soundcloud_Playlist_Downloader.JsonPoco
 {
-
+    public class PaginatedCollection
+    {
+        public Track[] collection { get; set; }
+        public string next_href { get; set; }
+    }
 
     public class PlaylistRoot
     {
@@ -193,6 +197,7 @@ namespace Soundcloud_Playlist_Downloader.JsonPoco
         public string[] available_country_codes { get; set; }
         public TrackCreatedWith TrackCreatedWith { get; set; }
 
+        public string Artist { get { return Username; } }
         public string Username
         {
             get
