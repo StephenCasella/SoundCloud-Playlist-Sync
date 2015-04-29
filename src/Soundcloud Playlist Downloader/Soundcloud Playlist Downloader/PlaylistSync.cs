@@ -487,7 +487,7 @@ namespace Soundcloud_Playlist_Downloader
         private IList<Track> DetermineTracksToDownload(string directoryPath, IList<Track> allSongs)
         {
 
-            allSongs= allSongs.Select(c => { c.LocalPath = Path.Combine(directoryPath,c.Sanitize(c.Title)); return c; }).ToList();
+            allSongs= allSongs.Select(c => { c.LocalPath = Path.Combine(directoryPath, c.Sanitize(c.Artist), c.Sanitize(c.Title)); return c; }).ToList();
 
             string manifestPath = DetermineManifestPath(directoryPath);
 

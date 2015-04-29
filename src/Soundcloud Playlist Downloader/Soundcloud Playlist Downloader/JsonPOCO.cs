@@ -142,18 +142,7 @@ namespace Soundcloud_Playlist_Downloader.JsonPoco
             }
         }
 
-        private string _path = null;
-        public string LocalPath
-        {
-            get
-            {
-                return _path;
-            }
-            set
-            {
-                _path = value;
-            }
-        }
+        public string LocalPath { get; set; }
 
         public bool IsHD { get { return download_url == EffectiveDownloadUrl; } }
 
