@@ -398,6 +398,8 @@ namespace Soundcloud_Playlist_Downloader
                     // metadata tagging
                     TagLib.File tagFile = TagLib.File.Create(song.LocalPath);
                     tagFile.Tag.Title = song.Title;
+                    string artworkFilepath = null;
+
                     if (!String.IsNullOrEmpty(song.Username))
                     {
                         tagFile.Tag.AlbumArtists = new string[] { song.Username };
@@ -410,9 +412,25 @@ namespace Soundcloud_Playlist_Downloader
                     if (!String.IsNullOrEmpty(song.description))
                     {
                         tagFile.Tag.Comment = song.description;
-                    }                    
+                    }
+                    if (!String.IsNullOrEmpty(song.artwork_url)) 
+                    {
+                        // download artwork
+                        artworkFilepath = Path.GetTempFileName();
+                        using (WebClient web = new WebClient()) 
+                        {
+                            web.DownloadFile(song.artwork_url, artworkFilepath);
+                        }
+                        
+                        tagFile.Tag.Pictures = new[] { new TagLib.Picture(artworkFilepath) };
+                    }
                     
                     tagFile.Save();
+
+                    if (artworkFilepath != null && File.Exists(artworkFilepath))
+                    {
+                        File.Delete(artworkFilepath);
+                    }
 
                     lock (SongsDownloadedLock)
                     {
