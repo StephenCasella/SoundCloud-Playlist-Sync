@@ -193,7 +193,6 @@ namespace Soundcloud_Playlist_Downloader.JsonPoco
         public string[] available_country_codes { get; set; }
         public TrackCreatedWith TrackCreatedWith { get; set; }
 
-        private string _username = null;
         public string Username
         {
             get

@@ -53,7 +53,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2FB1C32E902BD16CE6E5DBA5FA3D8D8ECD2801D3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>08349817351B82419B3F071730F79EEC340679D4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Soundcloud Playlist Downloader_TemporaryKey.pfx</ManifestKeyFile>
