@@ -368,8 +368,7 @@ namespace Soundcloud_Playlist_Downloader
                             request.Method = "HEAD";
                             using (WebResponse response = request.GetResponse())
                             {
-                                extension = Path.GetExtension(response.Headers["Content-Disposition"]
-                                    .Replace("attachment;filename=", "").Replace("\"", ""));
+                                extension = "."+response.Headers["x-amz-meta-file-type"];
                             }
                         }
                         catch (Exception)
@@ -380,8 +379,7 @@ namespace Soundcloud_Playlist_Downloader
                             request.Method = "HEAD";
                             using (WebResponse response = request.GetResponse())
                             {
-                                extension = Path.GetExtension(response.Headers["Content-Disposition"]
-                                    .Replace("attachment;filename=", "").Replace("\"", ""));
+                                extension = "."+response.Headers["x-amz-meta-file-type"];
                             }
                         }
 
